@@ -69,6 +69,8 @@ pipeline {
                     // Git 사용자 이름과 이메일 설정
                     sh "git config user.name '${GITHUB_USERNAME}'"
                     sh "git config user.email '${GITHUB_USERNAME}@gmail.com'"
+                    sh "git config --global user.name '${GITHUB_USERNAME}'"
+                    sh "git config --global user.email '${GITHUB_USERNAME}@gmail.com'"
 
                     // noiroze-web-manifest 레파지토리에 변경 사항을 커밋하고 푸시
                     dir("${env.WORKSPACE}/noiroze-web-manifest") {
