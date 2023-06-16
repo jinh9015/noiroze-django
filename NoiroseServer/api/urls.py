@@ -11,7 +11,7 @@ app_name = 'api'
 router = routers.DefaultRouter()
 router.register('sound_level', SoundLevelViewSet)
 router.register('sound_file', SoundFileViewSet)
-router.register('sound_level_verified', SoundLevelVerifiedViewSet)
+router.register('sound_verified', SoundLevelVerifiedViewSet)
 
 urlpatterns = [
     path('user_list/', UserListView.as_view()),             # api/user_list/   로 엔드포인트 설정. 유저 목록 확인 가능.
