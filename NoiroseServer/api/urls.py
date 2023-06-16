@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
-from .views import UserListView, UserLoginView, UserRegisterView, SoundLevelViewSet, SoundFileViewSet
+from .views import UserListView, UserLoginView, UserRegisterView, SoundLevelViewSet, SoundFileViewSet, SoundLevelVerifiedViewSet
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -11,6 +11,7 @@ app_name = 'api'
 router = routers.DefaultRouter()
 router.register('sound_level', SoundLevelViewSet)
 router.register('sound_file', SoundFileViewSet)
+router.register('sound_level_verified', SoundLevelVerifiedViewSet)
 
 urlpatterns = [
     path('user_list/', UserListView.as_view()),             # api/user_list/   로 엔드포인트 설정. 유저 목록 확인 가능.

@@ -10,8 +10,8 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.authentication import TokenAuthentication              
 
 from common.models import CustomUser, CustomUserManager
-from main.models import Sound_Level, Sound_File
-from .serializers import UserSerializer, UserRegisterSerializer, UserLoginSerializer, SoundLevelSerializer, SoundFileSerializer
+from main.models import Sound_Level, Sound_File, Sound_Level_Verified
+from .serializers import UserSerializer, UserRegisterSerializer, UserLoginSerializer, SoundLevelSerializer, SoundFileSerializer, SoundLevelVerifiedSerializer
 
 # Create your views here.
 
@@ -69,7 +69,7 @@ class SoundLevelViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         queryset = Sound_Level.objects.all().order_by('id')
-        if queryset.count() >= 20:                         # 데시벨 데이터 생성시, 20개 이상이 되면
+        if queryset.count() >= 100:                         # 데시벨 데이터 생성시, 100개 이상이 되면
             queryset.first().delete()                     # 가장 먼저 만들어진 데이터부터 삭제
         return response
     
@@ -82,6 +82,19 @@ class SoundFileViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         queryset = Sound_File.objects.all().order_by('id')
-        if queryset.count() >= 20:                         # 녹음파일 데이터 생성시, 20개 이상이 되면
+        if queryset.count() >= 100:                         # 녹음파일 데이터 생성시, 100개 이상이 되면
+            queryset.first().delete()                     # 가장 먼저 만들어진 데이터부터 삭제
+        return response
+    
+
+
+class SoundLevelVerifiedViewSet(viewsets.ModelViewSet):
+    queryset = Sound_Level_Verified.objects.all().order_by('-id')        # ID 정렬
+    serializer_class = SoundLevelVerifiedSerializer                   # 녹음파일 데이터에 대한 직렬화 처리
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        queryset = Sound_Level_Verified.objects.all().order_by('id')
+        if queryset.count() >= 100:                         # 검증 완료파일 데이터 생성시, 100개 이상이 되면
             queryset.first().delete()                     # 가장 먼저 만들어진 데이터부터 삭제
         return response

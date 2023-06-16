@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 
 from rest_framework import serializers
 from common.models import CustomUser
-from main.models import Sound_Level, Sound_File
+from main.models import Sound_Level, Sound_File, Sound_Level_Verified
 from rest_framework.authtoken.models import Token
 
 class UserSerializer(serializers.ModelSerializer):
@@ -74,6 +74,15 @@ class SoundFileSerializer(serializers.ModelSerializer) :
     class Meta :
         model = Sound_File
         fields = ('dong', 'ho', 'place', 'file_name', 'created_at')
+
+    def get_created_at(self, obj):
+        return obj.created_at.strftime('%y_%m_%d_%H_%M') # 날짜를 년월일시분 까지표시, String형태
+
+
+class SoundLevelVerifiedSerializer(serializers.ModelSerializer) :
+    class Meta :
+        model = Sound_Level_Verified
+        fields = ('dong', 'ho', 'place', 'value', 'created_at', 'sound_type')
 
     def get_created_at(self, obj):
         return obj.created_at.strftime('%y_%m_%d_%H_%M') # 날짜를 년월일시분 까지표시, String형태
