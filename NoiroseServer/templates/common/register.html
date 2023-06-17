@@ -4,7 +4,7 @@
 <html lang="ko">
 
   <head>
-    <title>DAMOA 회원가입</title>
+    <title>NoiroZe 회원가입</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap CSS -->
@@ -47,11 +47,11 @@
               <tr>
                 <td>
                   <a href="">
-                    <img alt="damoa logo" src='{% static "img/damoa logo.png" %}' width="80"/></a>
+                    <img alt="Noiroze logo" src='{% static "img/noiroze logo.png" %}' width="80"/></a>
                 </td>
                 <td>
                   <a href="">
-                    <img alt=" damoa" src='{% static "img/damoa.png" %}' width="200"/></a>
+                    <img alt="Noiroze" src='{% static "img/damoa.png" %}' width="200"/></a>
                 </td>
                 <tr></table>
 
@@ -93,31 +93,25 @@
               </div>
 
               <div class="form-group">
-                <label for="age">나이</label>
-                <input type="text" class="form-control" name="age" id="age" value="{{ form.age.value|default_if_none:'' }}">
+                <label for="apartment">아파트명</label>
+                <input type="text" class="form-control" name="apartment" id="apartment" value="{{ form.apartment.value|default_if_none:'' }}">
               </div>
 
-              <div class="form-inline">
-                <label for="male">
-                  <input type="radio" class="form-control" name="gender" id="male" value="M" checked="checked">남자</label>
-                <label for="female">
-                  <input type="radio" class="form-control" name="gender" id="female" value="F">여자</label>
-              </div><br>
+              <div class="form-group">
+                <label for="dong">동</label>
+                <select name="dong" id="dong">
+                    <option>::동 선택::</option>
+                    <option value="A">A동</option>
+                    <option value="B">B동</option>
+                    <option value="C">C동</option>
+                    <option value="D">D동</option>
+                    <option value="E">E동</option>
+                </select><br>
+              </div>
 
               <div class="form-group">
-                <label for="city">거주지</label>
-                <select name="city" id="city">
-                    <option>::지역 선택::</option>
-                    <option value="Seoul">서울</option>
-                    <option value="Incheon">인천</option>
-                    <option value="Gyeonggi">경기</option>
-                    <option value="Gangwon">강원</option>
-                    <option value="Chungcheong">충청</option>
-                    <option value="Jeolla">전라</option>
-                    <option value="Gyeongsang">경상</option>
-                </select><br>
-                상세주소
-                <textarea type="text" class="form-control" name="detail" id="detail"></textarea>
+                <label for="ho">호수</label>
+                <input type="text" class="form-control" name="ho" id="ho" value="{{ form.ho.value|default_if_none:'' }}">
               </div>
               <br>
 

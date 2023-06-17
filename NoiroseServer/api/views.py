@@ -43,11 +43,11 @@ class UserLoginView(APIView):
 
     def post(self, request):
         serializer = UserLoginSerializer(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid():                            # 유저 시리얼라이저 확인 후
             user = serializer.validated_data
-            token, _ = Token.objects.get_or_create(user=user)
-            response = Response({"token": token.key}, status=200)
-            response.set_cookie('auth-token', token.key)
+            token, _ = Token.objects.get_or_create(user=user)          # 로그인 한 유저의 토큰 생성
+            response = Response({"token": token.key}, status=200)     # 응답에 토큰 포함
+            response.set_cookie('auth-token', token.key)              # 
             return response
         
         return Response(serializer.errors, status=401)
@@ -55,7 +55,7 @@ class UserLoginView(APIView):
     def get(self, request, format=None):
         if request.user.is_staff :
             users = CustomUser.objects.userid()               # 모든 사용자 데이터를 가져오기
-            serializer = UserSerializer(users, many=True)  # 사용자를 직렬화
+            serializer = UserSerializer(users, many=True)     # 사용자를 직렬화
 
             return Response(serializer.data)                   # 직렬화된 사용자 데이터를 응답에 포함
         else:  # 슈퍼유저가 아니라면, 접근 거부 메시지를 반환
@@ -66,7 +66,7 @@ class UserLogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        request.user.auth_token.delete()
+        request.user.auth_token.delete()        # 로그아웃 사용자 토큰 제거
         return Response(status=204)  # 204 No Content - 성공적으로 처리했지만, 응답할 콘텐츠가 없을 때.
         
         
