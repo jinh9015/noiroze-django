@@ -71,4 +71,5 @@ class Sound_Level_Verified(models.Model):
     place = models.CharField(max_length=10, choices=PLACE_CHOICES, default='거실')       # 센서 설치 장소
     value = models.FloatField()                   # 센서 값 ( dB(A) )
     created_at = models.DateTimeField()           # 측정 날짜-시간
-    sound_type = models.CharField(max_length=100)
+    sound_type = models.CharField(max_length=100)  
+    file_name = models.CharField(max_length=40)   # 녹음된 파일 명

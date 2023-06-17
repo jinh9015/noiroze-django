@@ -36,7 +36,7 @@
                         <!-- <li><a class="dropdown-item" href="{% url 'common:login' %}">로그인</a></li> -->
                         <!-- <li><a class="dropdown-item" href="{% url 'common:register' %}">회원가입</a></li> -->
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" id="logout-button" href="">{{ user.id }}로그아웃</a></li>
+                        <li><a class="dropdown-item" id="logout-button" href="">로그아웃</a></li>
                         <li><a class="dropdown-item" id="login-button" href="{% url 'common:login' %}">로그인</a></li>
                         <li><a class="dropdown-item" id="register-button" href="{% url 'common:register' %}">회원가입</a></li>
                         <!-- <li><hr class="dropdown-divider" /></li> -->
@@ -242,5 +242,8 @@
     document.getElementById('logout-button').style.display = 'none';       // 로그아웃 버튼 숨기기
     document.getElementById('login-button').style.display = 'block';       // 로그인 버튼 보이기
     document.getElementById('register-button').style.display = 'block';    // 회원가입 버튼 보이기
+
+    
+    window.location.href = "/common/login/";       //   /common/login/ 페이지로 리디렉션
   }
 </script>
