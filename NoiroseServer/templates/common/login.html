@@ -116,7 +116,7 @@
                 window.localStorage.setItem('token', data.token); // Save the token
 
                 alert('로그인에 성공하였습니다.');
-                window.location.href = "/api/user_login";  // redirect to the main page
+                window.location.href = "/main/base";  // redirect to the main page
             },
             error: function (request, status, error) {
                 alert('로그인에 실패하였습니다. 아이디 또는 비밀번호를 확인해주세요.');  

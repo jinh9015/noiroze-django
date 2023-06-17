@@ -33,17 +33,14 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                      {% if user.is_authenticated %}
                         <!-- <li><a class="dropdown-item" href="{% url 'common:login' %}">로그인</a></li> -->
                         <!-- <li><a class="dropdown-item" href="{% url 'common:register' %}">회원가입</a></li> -->
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="{% url 'common:logout' %}">{{ user.id }}로그아웃</a></li>
-                      {% else %}
-                        <li><a class="dropdown-item" href="{% url 'common:login' %}">로그인</a></li>
-                        <li><a class="dropdown-item" href="{% url 'common:register' %}">회원가입</a></li>
+                        <li><a class="dropdown-item" id="logout-button" href="">{{ user.id }}로그아웃</a></li>
+                        <li><a class="dropdown-item" id="login-button" href="{% url 'common:login' %}">로그인</a></li>
+                        <li><a class="dropdown-item" id="register-button" href="{% url 'common:register' %}">회원가입</a></li>
                         <!-- <li><hr class="dropdown-divider" /></li> -->
                         <!-- <li><a class="dropdown-item" href="{% url 'main:base' %}">로그아웃</a></li> -->
-                      {% endif %}
                     </ul>
                 </li>
             </ul>
@@ -201,3 +198,49 @@
     </body>
 </html>
 
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    var token = localStorage.getItem('token');               // 로그인 성공 시, 로컬 스토리지에 존재하는 토큰을 가져옴
+   
+    if (token) {                                            // 토큰이 존재하는 경우
+      document.getElementById('logout-button').style.display = 'block'; 
+      document.getElementById('login-button').style.display = 'none';
+      document.getElementById('register-button').style.display = 'none';        // 로그아웃 버튼만 보여지도록 설정
+    } else {
+      document.getElementById('logout-button').style.display = 'none';
+      document.getElementById('login-button').style.display = 'block';
+      document.getElementById('register-button').style.display = 'block';     // 토큰이 없는 경우 로그인, 회원가입 버튼이 보여지도록 설정
+    }
+  });
+
+  document.getElementById('logout-button').addEventListener('click', function(e) {         // 로그아웃 버튼 클릭 시, 동작하는 함수
+    e.preventDefault();                                                                    // 기본 동작(페이지 이동)을 취소
+
+    // 로그아웃 요청 보내기
+    fetch('/api/user_logout/', {
+      method: 'POST',                          // api/views.py 의 user_logout 함수의 동작에 따라 설정.
+      headers: {
+        'Authorization': 'Token ' + localStorage.getItem('token'),          // 로컬 스토리지에 있는 토큰을 검증, 가져오기
+        // ... other headers as needed
+      },
+    })
+    .then(response => {
+      if (!response.ok) {                      // 검증되지 않은 사용자가 로그아웃 시도 시.
+        throw new Error('Logout failed');                  
+      }
+  
+      localStorage.removeItem('token');             
+      updateUIAfterLogout();                         // 본문 읽기를 스킵하고 직접 토큰을 제거하고 UI를 업데이트
+    })
+    .catch(error => {
+      console.error('Error:', error);        // 에러 발생 시에는 에러 검증 후 출력.
+    });
+  });
+
+  function updateUIAfterLogout() {
+    document.getElementById('logout-button').style.display = 'none';       // 로그아웃 버튼 숨기기
+    document.getElementById('login-button').style.display = 'block';       // 로그인 버튼 보이기
+    document.getElementById('register-button').style.display = 'block';    // 회원가입 버튼 보이기
+  }
+</script>
