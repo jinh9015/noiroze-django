@@ -1,0 +1,11 @@
+1. Templates 
+- base.html 수정
+
+2. static 
+chart.js
+styles.css
+scripts,js
+추가
+
+3. main 
+urls, views.py 수정
