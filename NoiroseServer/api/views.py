@@ -59,7 +59,15 @@ class UserLoginView(APIView):
 
             return Response(serializer.data)                   # 직렬화된 사용자 데이터를 응답에 포함
         else:  # 슈퍼유저가 아니라면, 접근 거부 메시지를 반환
-            return Response({"detail": "관리자 권한이 필요합니다."}, status=403)    
+            return Response({"detail": "관리자 권한이 필요합니다."}, status=403)
+        
+
+class UserLogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        request.user.auth_token.delete()
+        return Response(status=204)  # 204 No Content - 성공적으로 처리했지만, 응답할 콘텐츠가 없을 때.
         
         
 class SoundLevelViewSet(viewsets.ModelViewSet):

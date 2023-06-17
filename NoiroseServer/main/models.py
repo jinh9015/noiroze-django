@@ -50,7 +50,7 @@ class Sound_File(models.Model):
 
 
 
-# 사운드 센서 층간소음 측정
+# 층간소음 AI 필터링 후 데이터
 class Sound_Level_Verified(models.Model):
     DONG_CHOICES = (
         ('A', 'A동'),
