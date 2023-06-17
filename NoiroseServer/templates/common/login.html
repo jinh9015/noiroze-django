@@ -92,56 +92,60 @@
 
 <script>
   $(document).ready(function() {
-      $('#login-form').on('submit', function(e) {
-          e.preventDefault(); // Prevent the form from submitting via the browser.
-  
-          var form = $(this);
-          var url = form.attr('action');
-  
-          $.ajax({
-              type: 'POST',
-              url: url,
-              async: false, // 추가
-              contentType: 'application/json; charset=utf-8',
-              data: JSON.stringify({
-                  userid: $('#userid').val(),
-                  password: $('#password').val()
-              }),
-              dataType: 'json',
-              success: function(data) {
-                  window.localStorage.setItem('token', data.token);         // Save the token
-  
-                  alert('로그인에 성공하였습니다.');
-                  window.location.href = "/api/user_login";  // redirect to the main page
-              },
-              error: function (request, status, error) {
-                  alert('로그인에 실패하였습니다. 아이디 또는 비밀번호를 확인해주세요.');  
-                  window.location.href = "/common/login";  // redirect back to the login page
-              }
-          });
-      });
-  
-      $.ajaxSetup({
-          beforeSend: function(xhr, settings) {
-              // if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) // 해당하는 옵션 및 크로스 도메인인 경우에는 '제외'시킴
-                  xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-                  const token = window.localStorage.getItem('token');       // Add the token in the Authorization header
-                  console.log("Token:", token); // 로그 추가
-                  if (token) {
-                      xhr.setRequestHeader("Authorization", `Token ${token}`);
-                  }
-          }
-      });
-  
+    $('#login-form').on('submit', function(e) {
+        e.preventDefault(); // Prevent the form from submitting via the browser.
+
+        var form = $(this);
+        var url = form.attr('action');
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            async: false, // 추가
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                userid: $('#userid').val(),
+                password: $('#password').val()
+            }),
+            dataType: 'json',
+            beforeSend: function(xhr) {
+                // csrf 토큰을 위한 코드 추가
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            },
+            success: function(data) {
+                window.localStorage.setItem('token', data.token); // Save the token
+
+                alert('로그인에 성공하였습니다.');
+                window.location.href = "/api/user_login";  // redirect to the main page
+            },
+            error: function (request, status, error) {
+                alert('로그인에 실패하였습니다. 아이디 또는 비밀번호를 확인해주세요.');  
+                window.location.href = "/common/login";  // redirect back to the login page
+            }
+        });
+    });
+    
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            // if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) // 해당하는 옵션 및 크로스 도메인인 경우에는 '제외'시킴
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            const token = window.localStorage.getItem('token'); // Add the token in the Authorization header
+            console.log("Token:", token); // 로그 추가
+            if (token) {
+                xhr.setRequestHeader("Authorization", `Token ${token}`);
+            }
+        }
+    });
+
   });
-  
+
   function getCookie(name) {
       let cookieValue = null;
       if (document.cookie && document.cookie !== '') {
           const cookies = document.cookie.split(';');
           for (let i = 0; i < cookies.length; i++) {
               const cookie = jQuery.trim(cookies[i]);
-              if (cookie.substring(0, name.length + 1) === (name + '=')) {     // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) { // Does this cookie string begin with the name we want?
                   cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                   break;
               }
@@ -149,5 +153,6 @@
       }
       return cookieValue;
   }
+
 </script>
 
