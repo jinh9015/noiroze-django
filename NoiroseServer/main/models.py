@@ -45,9 +45,12 @@ class Sound_File(models.Model):
         ('방2', '방2'),
     )
     place = models.CharField(max_length=10, choices=PLACE_CHOICES, default='거실')       # 음성파일 녹음 장소
+    value = models.FloatField(null=True)                       # 녹음 측정 시, 그때의 데시벨 측정값.
     file_name = models.CharField(max_length=40)                # 녹음된 파일 명
     sound_file = models.FileField(upload_to="sound_file/%Y_%m_%d", null=True)     # 수신받은 파일이 서버에 저장될 위치
     created_at = models.DateTimeField(auto_now_add=True)           # 녹음 날짜-시간
+
+
 
 
 

@@ -73,7 +73,7 @@ class SoundLevelSerializer(serializers.ModelSerializer) :
 class SoundFileSerializer(serializers.ModelSerializer) :
     class Meta :
         model = Sound_File
-        fields = ('dong', 'ho', 'place', 'file_name', 'sound_file', 'created_at')
+        fields = ('dong', 'ho', 'place', 'value', 'file_name', 'sound_file', 'created_at')
 
     def get_created_at(self, obj):
         return obj.created_at.strftime('%y_%m_%d_%H_%M') # 날짜를 년월일시분 까지표시, String형태
