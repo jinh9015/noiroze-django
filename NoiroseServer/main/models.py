@@ -46,7 +46,7 @@ class Sound_File(models.Model):
     )
     place = models.CharField(max_length=10, choices=PLACE_CHOICES, default='거실')       # 음성파일 녹음 장소
     file_name = models.CharField(max_length=40)                # 녹음된 파일 명
-    sound_file = models.FileField(upload_to="sound_file/%Y_%m_%d")     # 수신받은 파일이 서버에 저장될 위치
+    sound_file = models.FileField(upload_to="sound_file/%Y_%m_%d", null=True)     # 수신받은 파일이 서버에 저장될 위치
     created_at = models.DateTimeField(auto_now_add=True)           # 녹음 날짜-시간
 
 
