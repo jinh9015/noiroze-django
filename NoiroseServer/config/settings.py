@@ -84,12 +84,12 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "mysql",            #DB이름
-        "USER": "root",
-        "PASSWORD": "password",
-        "HOST": "3.36.141.220",
-        "PORT": "3307",
+        "USER": "admin",
+        "PASSWORD": "admin123",
+        "HOST": "noiroze-db.csrccogv80xg.ap-northeast-2.rds.amazonaws.com",
+        "PORT": "3306",
     }
-}                     # 클라우드의 MySQL DB 사용 설정.
+}                # RDS의 MySQL DB 사용 설정.
 
 '''
 DATABASES = {
