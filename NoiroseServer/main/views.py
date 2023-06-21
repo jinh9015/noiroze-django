@@ -32,7 +32,7 @@ def download_sound_file(request):
 
         # 저장된 파일을 AWS S3의 'noiroze-noisefile-backup' 버킷에 업로드
         s3 = boto3.client('s3')
-        media_directory = "/media/"
+        media_directory = "../media/"
         file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), media_directory, file_name)
         file_key = media_directory + file_name
         try:
