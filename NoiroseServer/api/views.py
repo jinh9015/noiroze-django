@@ -13,8 +13,18 @@ from common.models import CustomUser, CustomUserManager
 from main.models import Sound_Level, Sound_File, Sound_Level_Verified
 from .serializers import UserSerializer, UserRegisterSerializer, UserLoginSerializer, SoundLevelSerializer, SoundFileSerializer, SoundLevelVerifiedSerializer
 
-# Create your views here.
+# 토큰 인증을 통해 로그인 한 유저의 정보를 가져오는 함수
+class UserDetailView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def get(self, request, format=None):
+        user = request.user  # 인증된 사용자를 가져옴
+        serializer = UserSerializer(user)  # 사용자를 직렬화
+
+        return Response(serializer.data)  # 직렬화된 사용자 데이터를 응답에 포함
+
+
+# 관리자 유저에 한해, 유저 목록 전체를 불러오는 함수
 class UserListView(APIView):
     permission_classes = [IsAuthenticated]
 
