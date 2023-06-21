@@ -6,6 +6,12 @@ from django.views.decorators.csrf import csrf_exempt
 import boto3
 import os
 
+aws_access_key = os.environ.get("AKIA5VZTIAOJTNNXWBPI")
+aws_secret_key = os.environ.get("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")
+
+# S3 인증 정보 추가
+s3 = boto3.client('s3', aws_access_key_id=aws_access_key, aws_secret_access_key=aws_secret_key)
+
 # Create your views here.
 def base_request(request):
     
