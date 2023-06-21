@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from . import views
 from . import models
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -12,14 +11,9 @@ aws_secret_key = os.environ.get("AWS_SECRET_KEY")
 # S3 인증 정보 추가
 s3 = boto3.client('s3', aws_access_key_id=aws_access_key, aws_secret_access_key=aws_secret_key)
 
-def upload_directory_to_s3(local_directory, bucket_name, s3_directory, s3_client):
-    for root, dirs, files in os.walk(local_directory):
-        for filename in files:
-            local_path = os.path.join(root, filename)
-            relative_path = os.path.relpath(local_path, local_directory)
-            s3_path = os.path.join(s3_directory, relative_path)
-            s3_client.upload_file(local_path, bucket_name, s3_path)
-            print(f"Uploaded {local_path} to s3://{bucket_name}/{s3_path}")
+def upload_file_to_s3(local_file_path, bucket_name, s3_key):
+    s3.upload_file(local_file_path, bucket_name, s3_key)
+    print(f"Uploaded {local_file_path} to s3://{bucket_name}/{s3_key}")
 
 # Create your views here.
 def base_request(request):
@@ -39,18 +33,15 @@ def download_sound_file(request):
         model = models.Sound_File(dong=dong, ho=ho, file_name=file_name, sound_file=sound_file)
         model.save()
 
-        # 저장된 파일을 AWS S3의 'noiroze-noisefile-backup' 버킷에 업로드
-        media_directory = "../media/"
-        local_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), media_directory)
+        # 업로드된 파일을 AWS S3의 'noiroze-noisefile-backup' 버킷에 업로드'
+        media_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../media/sound_file/2023_06_21/")
+        local_file_path = os.path.join(media_directory, file_name)
         bucket_name = 'noiroze-noisefile-backup'
-        s3_directory = 'media/'
+        s3_key = os.path.join('media', 'sound_file', '2023_06_21', file_name)
+        upload_file_to_s3(local_file_path, bucket_name, s3_key)
 
-        # 모든 media 폴더 내 파일들을 S3 버킷에 업로드
-        upload_directory_to_s3(local_directory, bucket_name, s3_directory, s3)
-
-        print('download sound file', dong, ho, file_name, sound_file)
+        print('Downloaded sound file:', dong, ho, file_name, sound_file)
         msg = {'result': 'success'}
-
     else:
         msg = {'result': 'fail'}
 
