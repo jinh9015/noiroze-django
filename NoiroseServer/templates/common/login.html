@@ -113,7 +113,7 @@
                 xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
             },
             success: function(data) {
-                window.localStorage.setItem('token', data.token); // Save the token
+                window.localStorage.setItem('auth-token', data.token); // Save the token
 
                 alert('로그인에 성공하였습니다.');
                 window.location.href = "/main/base";  // redirect to the main page
@@ -129,7 +129,7 @@
         beforeSend: function(xhr, settings) {
             // if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) // 해당하는 옵션 및 크로스 도메인인 경우에는 '제외'시킴
             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-            const token = window.localStorage.getItem('token'); // Add the token in the Authorization header
+            const token = window.localStorage.getItem('auth-token'); // Add the token in the Authorization header
             console.log("Token:", token); // 로그 추가
             if (token) {
                 xhr.setRequestHeader("Authorization", `Token ${token}`);
