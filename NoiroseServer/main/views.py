@@ -35,8 +35,10 @@ def download_sound_file(request):
         media_directory = "media/"
         file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), media_directory, file_name)
         file_key = media_directory + file_name
-        s3.upload_file(file_path, 'noiroze-noisefile-backup', file_key)
-
+        try:
+            s3.upload_file(file_path, 'noiroze-noisefile-backup', file_key)
+        except Exception as e:
+            print("Error uploading file to S3:", e)
         print('download sound file', dong, ho, file_name, sound_file)
         msg = {'result': 'success'}
 
