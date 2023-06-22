@@ -71,7 +71,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin) :
         ('104', '104동'),
         ('105', '105동'),
     )                               
-    dong = models.CharField(max_length=20, choices=DONG_CHOICES, default='A')
+    dong = models.CharField(max_length=5, choices=DONG_CHOICES, default='101')
     HO_CHOICES = (
         ('101', '101호'),
         ('102', '102호'),
@@ -94,7 +94,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin) :
         ('1001', '1001호'),
         ('1002', '1002호'),
     )
-    ho = models.CharField(blank=False, unique=True, max_length=4, default='0000')             # 커스텀 유저 모델에 사용할 필드들. userid 와 email 은 필수사항.
+    ho = models.CharField(blank=False, choices=HO_CHOICES, max_length=4, default='101')             # 커스텀 유저 모델에 사용할 필드들. userid 와 email 은 필수사항.
 
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
