@@ -97,7 +97,7 @@ class CommunityBoardSerializer(serializers.ModelSerializer):        # 커뮤니�
 
     class Meta:
         model = CommunityBoard
-        fields = ['title', 'content', 'author', 'created_date']
+        fields = ['category', 'title', 'content', 'author', 'created_date']
         read_only_fields = ('id',)
 
     # def get_created_date(self, obj):
