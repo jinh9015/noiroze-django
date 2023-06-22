@@ -148,7 +148,13 @@ class Sound_Level_Verified(models.Model):
 
 
 class CommunityBoard(models.Model):                            # 커뮤니티 게시판 모델
-    CATEGORY_CHOICES = ('정보공유', '소통해요', '붙어봐요', '밥먹어요')
+    CATEGORY_CHOICES = (
+        ('정보공유', '정보공유'),
+        ('소통해요', '소통해요'),
+        ('붙어봐요', '붙어봐요'),
+        ('칭찬해요', '칭찬해요'),
+        ('나눔해요', '나눔해요'),
+    )
     category = models.CharField(max_length=10, choices=CATEGORY_CHOICES, default='정보공유')       
     title = models.CharField(max_length=200) 
     content = models.TextField()  
