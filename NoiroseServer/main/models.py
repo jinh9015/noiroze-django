@@ -1,18 +1,42 @@
 from django.db import models
+from common.models import CustomUser
+from django.utils import timezone
 
 # Create your models here.
 
 # 사운드 센서 층간소음 측정
 class Sound_Level(models.Model):
     DONG_CHOICES = (
-        ('A', 'A동'),
-        ('B', 'B동'),
-        ('C', 'C동'),
-        ('D', 'D동'),
-        ('E', 'E동'),
+        ('101', '101동'),
+        ('102', '102동'),
+        ('103', '103동'),
+        ('104', '104동'),
+        ('105', '105동'),
     )
-    dong = models.CharField(max_length=10, choices=DONG_CHOICES, default='A')
-    ho = models.CharField(max_length=4, default=0000)             # 호수 필드 추가
+    dong = models.CharField(max_length=10, choices=DONG_CHOICES, default='101')
+    HO_CHOICES = (
+        ('101', '101호'),
+        ('102', '102호'),
+        ('201', '201호'),
+        ('202', '202호'),
+        ('301', '301호'),
+        ('302', '302호'),
+        ('401', '401호'),
+        ('402', '402호'),
+        ('501', '501호'),
+        ('502', '502호'),
+        ('601', '601호'),
+        ('602', '602호'),
+        ('701', '701호'),
+        ('702', '702호'),
+        ('801', '801호'),
+        ('802', '802호'),
+        ('901', '901호'),
+        ('902', '902호'),
+        ('1001', '1001호'),
+        ('1002', '1002호'),
+    )
+    ho = models.CharField(max_length=5, choices=HO_CHOICES, default='101')             # 호수 필드 추가
     PLACE_CHOICES = (
         ('거실', '거실'),
         ('안방', '안방'),
@@ -29,14 +53,36 @@ class Sound_Level(models.Model):
 # 층간소음 녹음 파일
 class Sound_File(models.Model):
     DONG_CHOICES = (
-        ('A', 'A동'),
-        ('B', 'B동'),
-        ('C', 'C동'),
-        ('D', 'D동'),
-        ('E', 'E동'),
+        ('101', '101동'),
+        ('102', '102동'),
+        ('103', '103동'),
+        ('104', '104동'),
+        ('105', '105동'),
     )
-    dong = models.CharField(max_length=20, choices=DONG_CHOICES, default='A')
-    ho = models.CharField(max_length=4, default=0000)             # 호수 필드 추가
+    dong = models.CharField(max_length=10, choices=DONG_CHOICES, default='101')
+    HO_CHOICES = (
+        ('101', '101호'),
+        ('102', '102호'),
+        ('201', '201호'),
+        ('202', '202호'),
+        ('301', '301호'),
+        ('302', '302호'),
+        ('401', '401호'),
+        ('402', '402호'),
+        ('501', '501호'),
+        ('502', '502호'),
+        ('601', '601호'),
+        ('602', '602호'),
+        ('701', '701호'),
+        ('702', '702호'),
+        ('801', '801호'),
+        ('802', '802호'),
+        ('901', '901호'),
+        ('902', '902호'),
+        ('1001', '1001호'),
+        ('1002', '1002호'),
+    )
+    ho = models.CharField(max_length=5, choices=HO_CHOICES, default='101')             # 호수 필드 추가
     PLACE_CHOICES = (
         ('거실', '거실'),
         ('안방', '안방'),
@@ -57,14 +103,36 @@ class Sound_File(models.Model):
 # 층간소음 AI 필터링 후 데이터
 class Sound_Level_Verified(models.Model):
     DONG_CHOICES = (
-        ('A', 'A동'),
-        ('B', 'B동'),
-        ('C', 'C동'),
-        ('D', 'D동'),
-        ('E', 'E동'),
+        ('101', '101동'),
+        ('102', '102동'),
+        ('103', '103동'),
+        ('104', '104동'),
+        ('105', '105동'),
     )
-    dong = models.CharField(max_length=10, choices=DONG_CHOICES, default='A')
-    ho = models.CharField(max_length=4, default=0000)             # 호수 필드 추가
+    dong = models.CharField(max_length=10, choices=DONG_CHOICES, default='101')
+    HO_CHOICES = (
+        ('101', '101호'),
+        ('102', '102호'),
+        ('201', '201호'),
+        ('202', '202호'),
+        ('301', '301호'),
+        ('302', '302호'),
+        ('401', '401호'),
+        ('402', '402호'),
+        ('501', '501호'),
+        ('502', '502호'),
+        ('601', '601호'),
+        ('602', '602호'),
+        ('701', '701호'),
+        ('702', '702호'),
+        ('801', '801호'),
+        ('802', '802호'),
+        ('901', '901호'),
+        ('902', '902호'),
+        ('1001', '1001호'),
+        ('1002', '1002호'),
+    )
+    ho = models.CharField(max_length=5, choices=HO_CHOICES, default='101')              # 호수 필드 추가
     PLACE_CHOICES = (
         ('거실', '거실'),
         ('안방', '안방'),
@@ -77,3 +145,23 @@ class Sound_Level_Verified(models.Model):
     created_at = models.DateTimeField(null=True)           # 측정 날짜-시간
     sound_type = models.CharField(max_length=100, null=True)  
     file_name = models.CharField(max_length=40, null=True)   # 녹음된 파일 명
+
+
+class CommunityBoard(models.Model):                            # 커뮤니티 게시판 모델
+    title = models.CharField(max_length=200) 
+    content = models.TextField()  
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  
+    created_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.title
+    
+
+class ComplainBoard(models.Model):                            # 민원접수 게시판 모델
+    title = models.CharField(max_length=200) 
+    content = models.TextField()  
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  
+    created_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.title

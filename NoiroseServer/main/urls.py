@@ -8,3 +8,5 @@ urlpatterns = [
     path('base/', views.base_request, name='base'),
     path('sound_file/', views.download_sound_file , name='sound_file'),
 ]
+
+# 게시판 html로 이동하는 url 필요 또는, base.html에 게시판 띄우는 작업 필요

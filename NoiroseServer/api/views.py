@@ -10,8 +10,8 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.authentication import TokenAuthentication              
 
 from common.models import CustomUser, CustomUserManager
-from main.models import Sound_Level, Sound_File, Sound_Level_Verified
-from .serializers import UserSerializer, UserRegisterSerializer, UserLoginSerializer, SoundLevelSerializer, SoundFileSerializer, SoundLevelVerifiedSerializer
+from main.models import Sound_Level, Sound_File, Sound_Level_Verified, CommunityBoard, ComplainBoard
+from .serializers import *
 
 # 토큰 인증을 통해 로그인 한 유저의 정보를 가져오는 함수
 class UserDetailView(APIView):
@@ -114,5 +114,29 @@ class SoundLevelVerifiedViewSet(viewsets.ModelViewSet):
         response = super().create(request, *args, **kwargs)
         queryset = Sound_Level_Verified.objects.all().order_by('id')
         if queryset.count() >= 100:                         # 검증 완료파일 데이터 생성시, 100개 이상이 되면
+            queryset.first().delete()                     # 가장 먼저 만들어진 데이터부터 삭제
+        return response
+    
+
+class CommunityBoardViewSet(viewsets.ModelViewSet):
+    queryset = CommunityBoard.objects.all().order_by('-id')        # ID 기준 정렬
+    serializer_class = CommunityBoardSerializer                   # 커뮤니티 게시판 데이터에 대한 직렬화 처리
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        queryset = CommunityBoard.objects.all().order_by('id')
+        if queryset.count() >= 200:                         # 게시판 데이터 생성시, 200개 이상이 되면
+            queryset.first().delete()                     # 가장 먼저 만들어진 데이터부터 삭제
+        return response
+    
+
+class ComplainBoardViewSet(viewsets.ModelViewSet):
+    queryset = ComplainBoard.objects.all().order_by('-id')        # ID 기준 정렬
+    serializer_class = ComplainBoardSerializer                   # 민원접수 게시판 데이터에 대한 직렬화 처리
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        queryset = ComplainBoard.objects.all().order_by('id')
+        if queryset.count() >= 200:                         # 게시판 데이터 생성시, 200개 이상이 되면
             queryset.first().delete()                     # 가장 먼저 만들어진 데이터부터 삭제
         return response
