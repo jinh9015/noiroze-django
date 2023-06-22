@@ -83,7 +83,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "noise_db",            #DB이름
+        "NAME": "noise_db",                      # DB이름
         "USER": "admin",
         "PASSWORD": "admin123",
         "HOST": "noiroze-db.csrccogv80xg.ap-northeast-2.rds.amazonaws.com",

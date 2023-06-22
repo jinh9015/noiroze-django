@@ -6,6 +6,7 @@ app_name = 'main'
 
 urlpatterns = [
     path('base/', views.base_request, name='base'),
+    path('community_board_list/', views.community_board_list, name='community_board_list'),
     path('sound_file/', views.download_sound_file , name='sound_file'),
 ]
 
