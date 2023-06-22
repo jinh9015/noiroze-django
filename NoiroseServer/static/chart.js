@@ -4,7 +4,7 @@ Chart.defaults.global.defaultFontColor = '#292b2c';
 
 var ctx = document.getElementById('myAreaChart').getContext('2d');
 // API 요청
-fetch('http://noiroze.com/api/sound_level/') // API 엔드포인트 URL로 변경
+fetch('#!') // API 엔드포인트 URL로 변경
     .then(response => response.json()) // 응답 데이터를 JSON 형식으로 변환
     .then(data => {
         var labels = data.map(item => item.place); // API 응답에서 place 데이터 추출
