@@ -7,7 +7,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated            # 토큰 인증 및 권한 확인을 위한 함수
 from rest_framework.authtoken.models import Token                                           # 토큰 기반의 로그인에서 사용, 토큰 검사를 수행한다.
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication        # Django에서 기본적으로 사용되는 csrf_token를 BasicAuthentication은 수행하지 않음. CSRF 토큰검사 비활성화
-from rest_framework.authentication import TokenAuthentication              
+from rest_framework.authentication import TokenAuthentication
+from .pagination import SetPagination
 
 from common.models import CustomUser, CustomUserManager
 from main.models import Sound_Level, Sound_File, Sound_Level_Verified, CommunityBoard, ComplainBoard
@@ -27,6 +28,7 @@ class UserDetailView(APIView):
 # 관리자 유저에 한해, 유저 목록 전체를 불러오는 함수
 class UserListView(APIView):
     permission_classes = [IsAuthenticated]
+    pagination_class = SetPagination
 
     def get(self, request, format=None):
         if request.user.is_staff :
@@ -83,6 +85,7 @@ class UserLogoutView(APIView):
 class SoundLevelViewSet(viewsets.ModelViewSet):
     queryset = Sound_Level.objects.all().order_by('-id')        # ID 정렬
     serializer_class = SoundLevelSerializer                   # 데시벨 데이터에 대한 직렬화 처리
+    pagination_class = SetPagination
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
@@ -96,6 +99,7 @@ class SoundLevelViewSet(viewsets.ModelViewSet):
 class SoundFileViewSet(viewsets.ModelViewSet):
     queryset = Sound_File.objects.all().order_by('-id')        # ID 정렬
     serializer_class = SoundFileSerializer                   # 녹음파일 데이터에 대한 직렬화 처리
+    pagination_class = SetPagination
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
@@ -109,6 +113,7 @@ class SoundFileViewSet(viewsets.ModelViewSet):
 class SoundLevelVerifiedViewSet(viewsets.ModelViewSet):
     queryset = Sound_Level_Verified.objects.all().order_by('-id')        # ID 정렬
     serializer_class = SoundLevelVerifiedSerializer                   # 녹음파일 데이터에 대한 직렬화 처리
+    pagination_class = SetPagination
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
@@ -121,6 +126,7 @@ class SoundLevelVerifiedViewSet(viewsets.ModelViewSet):
 class CommunityBoardViewSet(viewsets.ModelViewSet):
     queryset = CommunityBoard.objects.all().order_by('-id')        # ID 기준 정렬
     serializer_class = CommunityBoardSerializer                   # 커뮤니티 게시판 데이터에 대한 직렬화 처리
+    pagination_class = SetPagination
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
@@ -133,6 +139,7 @@ class CommunityBoardViewSet(viewsets.ModelViewSet):
 class ComplainBoardViewSet(viewsets.ModelViewSet):
     queryset = ComplainBoard.objects.all().order_by('-id')        # ID 기준 정렬
     serializer_class = ComplainBoardSerializer                   # 민원접수 게시판 데이터에 대한 직렬화 처리
+    pagination_class = SetPagination
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)

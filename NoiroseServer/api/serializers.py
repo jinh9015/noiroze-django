@@ -95,13 +95,17 @@ class CommunityBoardSerializer(serializers.ModelSerializer):        # 커뮤니�
         read_only=True,
         slug_field='userid'
     )
+    created_date = serializers.SerializerMethodField()
 
     class Meta:
         model = CommunityBoard
         fields = ['title', 'content', 'author', 'created_date']
 
-        def get_created_at(self, obj):
-            return obj.created_date.strftime('%y_%m_%d_%H_%M')        # 날짜를 년월일시분 까지표시, String형태
+    # def get_created_date(self, obj):
+    #     return obj.created_date.strftime('%y_%m_%d_%H_%M')        # 날짜를 년월일시분 까지표시, String형태
+    
+    def get_created_date(self, obj):
+        return obj.created_date.strftime('%y_%m_%d_%H_%M')  # 날짜를 년월일시분 까지 표시, String 형태
 
 
 
@@ -111,10 +115,11 @@ class ComplainBoardSerializer(serializers.ModelSerializer):         # 민원접�
         read_only=True,
         slug_field='userid'
     )
+    created_date = serializers.SerializerMethodField()
 
     class Meta:
         model = ComplainBoard
         fields = ['title', 'content', 'author', 'created_date']
 
-        def get_created_at(self, obj):
-            return obj.created_date.strftime('%y_%m_%d_%H_%M')        # 날짜를 년월일시분 까지표시, String형태
+    def get_created_date(self, obj):
+        return obj.created_date.strftime('%y_%m_%d_%H_%M')  # 날짜를 년월일시분 까지 표시, String 형태

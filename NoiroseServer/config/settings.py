@@ -46,12 +46,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS':
-        'rest_framework.pagination.PageNumberPagination',    # 페이지네이션
-    'PAGE_SIZE' : 20,    # id 20개가 한 페이지
-}
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
