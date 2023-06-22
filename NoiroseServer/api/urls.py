@@ -12,8 +12,8 @@ router = routers.DefaultRouter()
 router.register('sound_level', SoundLevelViewSet)
 router.register('sound_file', SoundFileViewSet)
 router.register('sound_verified', SoundLevelVerifiedViewSet)
-router.register('community_board', CommunityBoard)
-router.register('complain_board', ComplainBoard)
+router.register('community_board', CommunityBoardViewSet)
+router.register('complain_board', ComplainBoardViewSet)
 
 urlpatterns = [
     path('user_detail/', UserDetailView.as_view()),         # api/user_detail/   로 엔드포인트 설정. 로그인 한 유저 정보 확인 가능
