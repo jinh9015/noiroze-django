@@ -91,15 +91,14 @@ class SoundLevelVerifiedSerializer(serializers.ModelSerializer) :
 
 class CommunityBoardSerializer(serializers.ModelSerializer):        # 커뮤니티 게시판 모델 직렬화
     author = serializers.SlugRelatedField(
-        many=False,
-        read_only=True,
-        slug_field='userid'
+        slug_field='userid',
+        queryset=CustomUser.objects.all(),
     )
-    created_date = serializers.SerializerMethodField()
 
     class Meta:
         model = CommunityBoard
         fields = ['title', 'content', 'author', 'created_date']
+        read_only_fields = ('id',)
 
     # def get_created_date(self, obj):
     #     return obj.created_date.strftime('%y_%m_%d_%H_%M')        # 날짜를 년월일시분 까지표시, String형태
@@ -111,15 +110,14 @@ class CommunityBoardSerializer(serializers.ModelSerializer):        # 커뮤니�
 
 class ComplainBoardSerializer(serializers.ModelSerializer):         # 민원접수 게시판 모델 직렬화
     author = serializers.SlugRelatedField(
-        many=False,
-        read_only=True,
-        slug_field='userid'
+        slug_field='userid',
+        queryset=CustomUser.objects.all(),
     )
-    created_date = serializers.SerializerMethodField()
 
     class Meta:
-        model = ComplainBoard
+        model = CommunityBoard
         fields = ['title', 'content', 'author', 'created_date']
+        read_only_fields = ('id',)
 
     def get_created_date(self, obj):
         return obj.created_date.strftime('%y_%m_%d_%H_%M')  # 날짜를 년월일시분 까지 표시, String 형태
