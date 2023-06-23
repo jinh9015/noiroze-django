@@ -1,4 +1,5 @@
 from django.db import models
+from django.shortcuts import redirect, render
 from common.models import CustomUser
 from django.utils import timezone
 
@@ -173,3 +174,21 @@ class ComplainBoard(models.Model):                            # 민원접수 게
 
     def __str__(self):
         return self.title
+
+from .models import ComplainBoard
+from .forms import ComplainBoardForm
+
+def question_create(request):
+    '''
+    질문 생성 폼 및 처리
+    '''
+    if request.method == 'POST':
+        form = ComplainBoardForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('main:community_board_list')
+    else:
+        form = ComplainBoardForm()
+
+    context = {'form': form}
+    return render(request, 'question_create.html', context)

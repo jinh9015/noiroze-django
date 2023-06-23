@@ -23,5 +23,6 @@ urlpatterns = [
     path('common/', include('common.urls')),               # common 에서 설정한 urls 앞에 common/ 이 추가됨
     path('main/', include('main.urls')),                   # main 에서 설정한 urls 앞에 main/ 이 추가됨
     path('api/', include('api.urls')),                     # api 에서 설정한 urls 앞에 api/ 이 추가됨
+     path('board/', include('board.urls')),
  
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
