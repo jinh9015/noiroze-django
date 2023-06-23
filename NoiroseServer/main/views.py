@@ -8,7 +8,7 @@ from .models import *
 
 # Create your views here.
 def base_request(request):
-    return render(request, 'base.html')
+    return render(request, 'main/base.html')
 
 # 녹음파일 서버에 저장하는 함수
 @csrf_exempt
@@ -70,3 +70,20 @@ def community_board_list(request):
     page_obj = paginator.get_page(page)
     context = {'board_list':page_obj, 'page':page, 'kw':kw, 'so':so}
     return render(request, 'community_board.html')
+
+
+
+def dong_101_request(request):
+    return render(request, 'main/전체 동/dong_101.html')
+
+def dong_102_request(request):
+    return render(request, 'main/전체 동/dong_102.html')
+
+def dong_103_request(request):
+    return render(request, 'main/전체 동/dong_103.html')
+
+def dong_104_request(request):
+    return render(request, 'main/전체 동/dong_104.html')
+
+def dong_105_request(request):
+    return render(request, 'main/전체 동/dong_105.html')         # 동 별 차트를 그리는 페이지로 render 하는 함수
