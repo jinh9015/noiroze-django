@@ -13,7 +13,6 @@ router.register('sound_level', SoundLevelViewSet)
 router.register('sound_file', SoundFileViewSet)
 router.register('sound_verified', SoundLevelVerifiedViewSet)
 router.register('community_board', CommunityBoardViewSet)
-router.register('community_board_reply', ReplyViewSet)
 router.register('complain_board', ComplainBoardViewSet)
 
 urlpatterns = [

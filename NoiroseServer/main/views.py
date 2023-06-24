@@ -1,14 +1,22 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q, Count
 from django.core.paginator import Paginator
 
 from .models import *
+from .forms import ComplainBoardForm
 
 # Create your views here.
 def base_request(request):
-    return render(request, 'main/base.html')
+    return render(request, 'base.html')
+
+def dash_request(request):
+    return render(request, 'dash.html')
+
+
+
+
 
 # 녹음파일 서버에 저장하는 함수
 @csrf_exempt
@@ -29,61 +37,61 @@ def download_sound_file(request):
 
     return JsonResponse(msg)
 
-
 def community_board_list(request):
     '''
-    board_list 출력
+    커뮤니티 게시판 리스트 출력
     '''
     
     # 입력 인자
     page = request.GET.get('page', '1')  # 페이지
     kw = request.GET.get('kw', '')  # 검색어
-    so = request.GET.get('so', 'recent') # 정렬 기준 / default 최신순
+    so = request.GET.get('so', 'recent')  # 정렬 기준 / default 최신순
 
+    # 정렬 기준에 따라 게시물을 가져옴
     if so == 'recent':
-        board_list = CommunityBoard.objects.order_by('-create_date')
+        board_list = CommunityBoard.objects.order_by('-created_date')
     elif so == 'late':
-        board_list = CommunityBoard.objects.order_by('create_date')
+        board_list = CommunityBoard.objects.order_by('created_date')
     elif so == 'recommend':
-        board_list = CommunityBoard.objects.annotate(
-            num_voter = Count('voter')).order_by('-num_voter', '-create_date')
+        board_list = CommunityBoard.objects.annotate(num_voter=Count('voter')).order_by('-num_voter', '-created_date')
     elif so == 'popular':
-        board_list = CommunityBoard.objects.annotate(
-            num_reply = Count('reply')).order_by('-num_reply', '-create_date')
-    else : # 위 경우 제외 board_id 역순정렬
+        board_list = CommunityBoard.objects.annotate(num_reply=Count('reply')).order_by('-num_reply', '-created_date')
+    else:
         board_list = CommunityBoard.objects.order_by('-id')
 
+    # 검색어에 따라 필터링
     if kw:
-        kw = kw.replace('년','')
-        kw = kw.replace('월','')
-        kw = kw.replace('일','')
+        kw = kw.replace('년', '')
+        kw = kw.replace('월', '')
+        kw = kw.replace('일', '')
         board_list = board_list.filter(
-            Q(subject__icontains=kw) |  # 제목 검색
-            Q(content__icontains=kw) |  # 내용 검색
-            Q(author__name__icontains=kw) |  # 작성자 검색
-            Q(club__name__icontains=kw) |    # 클럽 이름 검색
-            Q(club__category__icontains=kw) |  # 클럽 카테고리 검색
-            Q(event_date__icontains=kw)      # 모임일 검색
-        ).distinct()
+    Q(title__icontains=kw) |  # 제목 검색
+    Q(content__icontains=kw) |  # 내용 검색
+    Q(author__name__icontains=kw)  # 작성자 검색
+    ).distinct()
 
-    paginator = Paginator(board_list, 10)  # 페이지당 10개 
+
+    paginator = Paginator(board_list, 10)  # 페이지당 10개
     page_obj = paginator.get_page(page)
-    context = {'board_list':page_obj, 'page':page, 'kw':kw, 'so':so}
-    return render(request, 'community_board.html')
+    context = {'board_list': page_obj, 'page': page, 'kw': kw, 'so': so}
+    return render(request, 'board/question_list.html', context)
 
 
 
-def dong_101_request(request):
-    return render(request, 'main/전체 동/dong_101.html')
+def question_create(request):
+    '''
+    질문 생성 폼 및 처리
+    '''
+    if request.method == 'POST':
+        form = ComplainBoardForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('main:community_board_list')
+    else:
+        form = ComplainBoardForm()
 
-def dong_102_request(request):
-    return render(request, 'main/전체 동/dong_102.html')
+    context = {'form': form}
+    return render(request, 'question_create.html', context)
 
-def dong_103_request(request):
-    return render(request, 'main/전체 동/dong_103.html')
 
-def dong_104_request(request):
-    return render(request, 'main/전체 동/dong_104.html')
 
-def dong_105_request(request):
-    return render(request, 'main/전체 동/dong_105.html')         # 동 별 차트를 그리는 페이지로 render 하는 함수

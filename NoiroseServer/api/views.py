@@ -83,81 +83,67 @@ class UserLogoutView(APIView):
         
         
 class SoundLevelViewSet(viewsets.ModelViewSet):
-    queryset = Sound_Level.objects.all().order_by('-id')                    # ID 정렬
-    serializer_class = SoundLevelSerializer                                 # 데시벨 데이터에 대한 직렬화 처리
+    queryset = Sound_Level.objects.all().order_by('-id')        # ID 정렬
+    serializer_class = SoundLevelSerializer                   # 데시벨 데이터에 대한 직렬화 처리
     pagination_class = SetPagination
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         queryset = Sound_Level.objects.all().order_by('id')
-        if queryset.count() >= 1000:                                        # 데시벨 데이터 생성시, 100개 이상이 되면
-            queryset.first().delete()                                       # 가장 먼저 만들어진 데이터부터 삭제
+        if queryset.count() >= 100:                         # 데시벨 데이터 생성시, 100개 이상이 되면
+            queryset.first().delete()                     # 가장 먼저 만들어진 데이터부터 삭제
         return response
     
 
 
 class SoundFileViewSet(viewsets.ModelViewSet):
-    queryset = Sound_File.objects.all().order_by('-id')                     # ID 정렬
-    serializer_class = SoundFileSerializer                                  # 녹음파일 데이터에 대한 직렬화 처리
+    queryset = Sound_File.objects.all().order_by('-id')        # ID 정렬
+    serializer_class = SoundFileSerializer                   # 녹음파일 데이터에 대한 직렬화 처리
     pagination_class = SetPagination
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         queryset = Sound_File.objects.all().order_by('id')
-        if queryset.count() >= 1000:                                        # 녹음파일 데이터 생성시, 1000개 이상이 되면
-            queryset.first().delete()                                       # 가장 먼저 만들어진 데이터부터 삭제
+        if queryset.count() >= 100:                         # 녹음파일 데이터 생성시, 100개 이상이 되면
+            queryset.first().delete()                     # 가장 먼저 만들어진 데이터부터 삭제
         return response
     
 
 
 class SoundLevelVerifiedViewSet(viewsets.ModelViewSet):
-    queryset = Sound_Level_Verified.objects.all().order_by('-id')           # ID 정렬
-    serializer_class = SoundLevelVerifiedSerializer                         # 녹음파일 데이터에 대한 직렬화 처리
+    queryset = Sound_Level_Verified.objects.all().order_by('-id')        # ID 정렬
+    serializer_class = SoundLevelVerifiedSerializer                   # 녹음파일 데이터에 대한 직렬화 처리
     pagination_class = SetPagination
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         queryset = Sound_Level_Verified.objects.all().order_by('id')
-        if queryset.count() >= 1000:                                        # 검증 완료파일 데이터 생성시, 1000개 이상이 되면
-            queryset.first().delete()                                       # 가장 먼저 만들어진 데이터부터 삭제
+        if queryset.count() >= 100:                         # 검증 완료파일 데이터 생성시, 100개 이상이 되면
+            queryset.first().delete()                     # 가장 먼저 만들어진 데이터부터 삭제
         return response
     
 
 class CommunityBoardViewSet(viewsets.ModelViewSet):
-    queryset = CommunityBoard.objects.all().order_by('-created_date')        # 생성일시 기준 정렬
-    serializer_class = CommunityBoardSerializer                              # 커뮤니티 게시판 데이터에 대한 직렬화 처리
+    queryset = CommunityBoard.objects.all().order_by('-id')        # ID 기준 정렬
+    serializer_class = CommunityBoardSerializer                   # 커뮤니티 게시판 데이터에 대한 직렬화 처리
     pagination_class = SetPagination
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        queryset = CommunityBoard.objects.all().order_by('-created_date')
-        if queryset.count() >= 200:                                          # 게시판 데이터 생성시, 200개 이상이 되면
-            queryset.first().delete()                                        # 가장 먼저 만들어진 데이터부터 삭제
-        return response
-    
-
-
-class ReplyViewSet(viewsets.ModelViewSet):
-    queryset = Reply.objects.all().order_by('-created_date')        # 생성일시 기준 정렬
-    serializer_class = ReplySerializer                              # 커뮤니티 게시판 데이터에 대한 직렬화 처리
-    pagination_class = SetPagination
-
-    def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
-        queryset = Reply.objects.all().order_by('-created_date')
-        if queryset.count() >= 200:                                          # 게시판 데이터 생성시, 200개 이상이 되면
-            queryset.first().delete()                                        # 가장 먼저 만들어진 데이터부터 삭제
+        queryset = CommunityBoard.objects.all().order_by('id')
+        if queryset.count() >= 200:                         # 게시판 데이터 생성시, 200개 이상이 되면
+            queryset.first().delete()                     # 가장 먼저 만들어진 데이터부터 삭제
         return response
     
 
 class ComplainBoardViewSet(viewsets.ModelViewSet):
-    queryset = ComplainBoard.objects.all().order_by('-created_date')        # 생성일시 기준 정렬
-    serializer_class = ComplainBoardSerializer                              # 민원접수 게시판 데이터에 대한 직렬화 처리
+    queryset = ComplainBoard.objects.all().order_by('-id')        # ID 기준 정렬
+    serializer_class = ComplainBoardSerializer                   # 민원접수 게시판 데이터에 대한 직렬화 처리
     pagination_class = SetPagination
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         queryset = ComplainBoard.objects.all().order_by('id')
-        if queryset.count() >= 200:                                         # 게시판 데이터 생성시, 200개 이상이 되면
-            queryset.first().delete()                                       # 가장 먼저 만들어진 데이터부터 삭제
+        if queryset.count() >= 200:                         # 게시판 데이터 생성시, 200개 이상이 되면
+            queryset.first().delete()                     # 가장 먼저 만들어진 데이터부터 삭제
         return response
