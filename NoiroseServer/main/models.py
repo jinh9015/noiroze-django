@@ -154,13 +154,13 @@ class CommunityBoard(models.Model):                                             
         ('칭찬해요', '칭찬해요'),
         ('나눔해요', '나눔해요'),
     )
-    category = models.CharField('게시판 카테고리', max_length=10, choices=CATEGORY_CHOICES, default='정보공유')               # 카테고리
-    title = models.CharField('게시판 제목', max_length=200)                                                              # 제목
-    content = models.TextField('게시판 내용')                                                                          # 내용
-    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)                                      # 작성자
-    created_date = models.DateTimeField('작성 일시', default=timezone.now)                                             # 작성일시
-    modify_date = models.DateTimeField('수정 일시', null=True, blank=True)                                             # 수정일시
-    like=models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like')                            # 추천 수
+    category = models.CharField('게시판 카테고리', max_length=10, choices=CATEGORY_CHOICES, default='정보공유')    # 카테고리
+    title = models.CharField('게시판 제목', max_length=200)                                                       # 제목
+    content = models.TextField('게시판 내용')                                                                     # 내용
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)                                             # 작성자
+    created_date = models.DateTimeField('작성 일시', default=timezone.now)                                        # 작성일시
+    modify_date = models.DateTimeField('수정 일시', null=True, blank=True)                                        # 수정일시
+    like=models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like', blank=True)                                   # 추천 수
 
     def __str__(self):
         return self.title
