@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 
 from rest_framework import serializers
 from common.models import CustomUser
-from main.models import Sound_Level, Sound_File, Sound_Level_Verified, CommunityBoard, ComplainBoard
+from main.models import Sound_Level, Sound_File, Sound_Level_Verified, CommunityBoard, ComplainBoard, Reply
 from rest_framework.authtoken.models import Token
 
 class UserSerializer(serializers.ModelSerializer):
@@ -97,11 +97,26 @@ class CommunityBoardSerializer(serializers.ModelSerializer):        # 커뮤니�
 
     class Meta:
         model = CommunityBoard
-        fields = ['category', 'title', 'content', 'author', 'created_date']
+        fields = ['category', 'title', 'content', 'author', 'created_date', 'modify_date', 'like']
         read_only_fields = ('id',)
 
     # def get_created_date(self, obj):
     #     return obj.created_date.strftime('%y_%m_%d_%H_%M')        # 날짜를 년월일시분 까지표시, String형태
+    
+    def get_created_date(self, obj):
+        return obj.created_date.strftime('%y_%m_%d_%H_%M')  # 날짜를 년월일시분 까지 표시, String 형태
+
+
+class ReplySerializer(serializers.ModelSerializer):        # 커뮤니티 게시판 댓글 모델 직렬화
+    author = serializers.SlugRelatedField(
+        slug_field='userid',
+        queryset=CustomUser.objects.all(),
+    )
+
+    class Meta:
+        model = Reply
+        fields = ['community_board', 'author', 'content', 'created_date', 'modify_date']
+        read_only_fields = ('id',)
     
     def get_created_date(self, obj):
         return obj.created_date.strftime('%y_%m_%d_%H_%M')  # 날짜를 년월일시분 까지 표시, String 형태

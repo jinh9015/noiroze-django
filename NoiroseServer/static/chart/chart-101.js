@@ -8,7 +8,15 @@ var ctx = document.getElementById('myAreaChart').getContext('2d');
 
 // API 요청
 fetch('http://noiroze.com/api/sound_level/')
-    .then(response => response.json()) // 응답 데이터를 JSON 형식으로 변환
+    .then(response => {
+        if(response.ok) { // 응답이 성공적이면
+            console.log('Success:', response);
+        } 
+        else { // 응답이 실패하면
+            console.log('Error:', response);
+        }
+        return response.json(); // 응답 데이터를 JSON 형식으로 변환
+    })
     .then(data => {
         // 101동에 해당되는 데이터 필터링
         var filteredData = data.filter(item => item.dong === '101');
@@ -81,8 +89,9 @@ fetch('http://noiroze.com/api/sound_level/')
             },
             options: options
         });
-    });
-
+    })
+    .catch(error => console.error('Error:', error)); // 네트워크 에러 등의 예외 처리
+    
 
 
 /////////////일별 평균 데시벨
