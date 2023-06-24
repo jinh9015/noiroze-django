@@ -93,6 +93,7 @@ DATABASES = {
     }
 }                # RDS의 MySQL DB 사용 설정.
 
+
 '''
 DATABASES = {
     "default": {
