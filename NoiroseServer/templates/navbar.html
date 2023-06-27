@@ -94,7 +94,7 @@
               })
               .then(response => {
                 if (!response.ok) {                           // 토큰이 검증되지 않은 사용자가 로그아웃 시도 시.
-                  throw new Error('Logout failed');                  
+                  throw new Error('검증되지 않은 사용자 입니다.');                  
                 }
                 localStorage.removeItem('auth-token');             // 검증이 처리 된 경우, 해당 사용자의 토큰을 제거     
                 updateUIAfterLogout();                        // 본문 읽기를 스킵하고 직접 토큰을 제거하고 UI를 업데이트
@@ -128,7 +128,7 @@
                           return response.json();
                       }
                       else {                                     // 응답 요청 실패시
-                          throw new Error('Failed to fetch user info');
+                          throw new Error('서버로 부터 인증에 실패하였습니다.');
                       }
                       })
                       .then(function(user) {    // 응답 요청 성공 시, 이후에 처리하는 함수

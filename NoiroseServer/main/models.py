@@ -142,7 +142,13 @@ class Sound_Level_Verified(models.Model):
     place = models.CharField('센서 설치 장소', max_length=10, choices=PLACE_CHOICES, default='거실')       # 센서 설치 장소
     value = models.FloatField('데시벨 측정 값', null=True)                   # 센서 값 ( dB(A) )
     created_at = models.DateTimeField('측정 시간', null=True)           # 측정 날짜-시간
-    sound_type = models.CharField('소음 종류', max_length=100, null=True)  
+    TYPE_CHOICES = (
+        ('발걸음소리', '발걸음소리'),
+        ('가구끄는소리', '가구끄는소리'),
+        ('악기소리', '악기소리'),
+        ('동물소리', '동물소리')
+    )
+    sound_type = models.CharField('소음 종류', max_length=30, choices=TYPE_CHOICES, default='발걸음소리')  
     file_name = models.CharField('녹음 파일 명', max_length=40, null=True)   # 녹음된 파일 명
 
 
@@ -150,7 +156,6 @@ class CommunityBoard(models.Model):                                             
     CATEGORY_CHOICES = (
         ('정보공유', '정보공유'),
         ('소통해요', '소통해요'),
-        ('붙어봐요', '붙어봐요'),
         ('칭찬해요', '칭찬해요'),
         ('나눔해요', '나눔해요'),
     )
