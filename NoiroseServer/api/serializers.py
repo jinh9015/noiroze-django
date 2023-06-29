@@ -130,7 +130,7 @@ class ComplainBoardSerializer(serializers.ModelSerializer):         # 민원접�
     )
 
     class Meta:
-        model = CommunityBoard
+        model = ComplainBoard
         fields = ['title', 'content', 'author', 'created_date']
         read_only_fields = ('id',)
 
