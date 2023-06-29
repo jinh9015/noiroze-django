@@ -200,3 +200,17 @@ class ComplainBoardViewSet(viewsets.ModelViewSet):
         if queryset.count() >= 200:                                         # 게시판 데이터 생성시, 200개 이상이 되면
             queryset.first().delete()                                       # 가장 먼저 만들어진 데이터부터 삭제
         return response
+
+
+
+class NoticeBoardViewSet(viewsets.ModelViewSet):
+    queryset = NoticeBoard.objects.all().order_by('-created_date')        # 생성일시 기준 정렬
+    serializer_class = NoticeBoardSerializer                              # 공지사항 게시판 데이터에 대한 직렬화 처리
+    pagination_class = SetPagination
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        queryset = NoticeBoard.objects.all().order_by('-created_date')
+        if queryset.count() >= 20:                                           # 공지사항 데이터 생성시, 20개 이상이 되면
+            queryset.first().delete()                                        # 가장 먼저 만들어진 데이터부터 삭제
+        return response

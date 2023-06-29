@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 
 from rest_framework import serializers
 from common.models import CustomUser
-from main.models import Sound_Level, Sound_File, Sound_Level_Verified, CommunityBoard, ComplainBoard, Reply
+from main.models import Sound_Level, Sound_File, Sound_Level_Verified, CommunityBoard, ComplainBoard, Reply, NoticeBoard
 from rest_framework.authtoken.models import Token
 
 class UserSerializer(serializers.ModelSerializer):
@@ -133,6 +133,15 @@ class ComplainBoardSerializer(serializers.ModelSerializer):         # 민원접�
         model = ComplainBoard
         fields = ['title', 'content', 'author', 'created_date']
         read_only_fields = ('id',)
+
+    def get_created_date(self, obj):
+        return obj.created_date.strftime('%y_%m_%d_%H_%M')  # 날짜를 년월일시분 까지 표시, String 형태
+    
+
+class NoticeBoardSerializer(serializers.ModelSerializer):         # 민원접수 게시판 모델 직렬화
+    class Meta:
+        model = NoticeBoard
+        fields = ['title', 'content', 'created_date']
 
     def get_created_date(self, obj):
         return obj.created_date.strftime('%y_%m_%d_%H_%M')  # 날짜를 년월일시분 까지 표시, String 형태

@@ -175,8 +175,8 @@ class CommunityBoard(models.Model):                                             
 class Reply(models.Model):                                                                                      # 커뮤니티 게시판 댓글 모델
     community_board = models.ForeignKey(CommunityBoard, on_delete=models.CASCADE)                               # 게시판 모델 외래키 설정
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1, null=True)        # 게시판 작성자 외래키 설정
-    content = models.TextField('게시판 내용')                                                                                # 댓글 내용
-    created_date = models.DateTimeField('작성 일시')                                                                # 댓글 생성일
+    content = models.TextField('댓글 내용')                                                                                # 댓글 내용
+    created_date = models.DateTimeField('작성 일시', default=timezone.now)                                                                # 댓글 생성일
     modify_date = models.DateTimeField('수정 일시', null=True, blank=True)                                                   # 댓글 수정일
     # reply_like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='reply_like')
 
@@ -185,10 +185,19 @@ class Reply(models.Model):                                                      
     
 
 class ComplainBoard(models.Model):                            # 민원접수 게시판 모델
-    title = models.CharField(max_length=200) 
-    content = models.TextField()  
+    title = models.CharField('민원 제목', max_length=200) 
+    content = models.TextField('민원 내용')  
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  
-    created_date = models.DateTimeField(default=timezone.now)
+    created_date = models.DateTimeField('작성 일시', default=timezone.now)
+
+    def __str__(self):
+        return self.title
+
+
+class NoticeBoard(models.Model) :
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created_date = models.DateTimeField('작성 일시', default=timezone.now)
 
     def __str__(self):
         return self.title
