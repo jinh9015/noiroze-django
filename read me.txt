@@ -9,3 +9,4 @@ scripts,js
 
 3. main 
 urls, views.py 수정
+
