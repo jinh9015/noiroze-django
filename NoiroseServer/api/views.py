@@ -181,7 +181,7 @@ class ReplyViewSet(viewsets.ModelViewSet):
 
 class ComplainBoardViewSet(viewsets.ModelViewSet):
     queryset = ComplainBoard.objects.all().order_by('-created_date')        # 생성일시 기준 정렬
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]                                  # 토큰 검증
     serializer_class = ComplainBoardSerializer                              # 민원접수 게시판 데이터에 대한 직렬화 처리
     pagination_class = SetPagination
 
@@ -192,7 +192,7 @@ class ComplainBoardViewSet(viewsets.ModelViewSet):
         if user.is_superuser:  # if the user is an admin
             return ComplainBoard.objects.all().order_by('-id')
         else:
-            return ComplainBoard.objects.filter(author=user.userid).order_by('-id')
+            return ComplainBoard.objects.filter(author=user.userid).order_by('-id')   # 토큰이 검증되면, 해당 유저의 아이디와 일치하는 내용만 가져옴
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
