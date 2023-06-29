@@ -83,9 +83,19 @@ class UserLogoutView(APIView):
         
         
 class SoundLevelViewSet(viewsets.ModelViewSet):
-    queryset = Sound_Level.objects.all().order_by('-id')                    # ID 정렬
+    queryset = Sound_Level.objects.all()
+    permission_classes = [AllowAny]
     serializer_class = SoundLevelSerializer                                 # 데시벨 데이터에 대한 직렬화 처리
     pagination_class = SetPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_anonymous:   # if the user is anonymous
+            return Sound_Level.objects.all().order_by('-id')
+        if user.is_superuser:  # if the user is an admin
+            return Sound_Level.objects.all().order_by('-id')
+        else:
+            return Sound_Level.objects.filter(dong=user.dong, ho=user.ho).order_by('-id')
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
@@ -95,11 +105,20 @@ class SoundLevelViewSet(viewsets.ModelViewSet):
         return response
     
 
-
 class SoundFileViewSet(viewsets.ModelViewSet):
-    queryset = Sound_File.objects.all().order_by('-id')                     # ID 정렬
+    queryset = Sound_File.objects.all()
+    permission_classes = [AllowAny]
     serializer_class = SoundFileSerializer                                  # 녹음파일 데이터에 대한 직렬화 처리
     pagination_class = SetPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_anonymous:   # if the user is anonymous
+            return Sound_File.objects.all().order_by('-id')
+        if user.is_superuser:  # if the user is an admin
+            return Sound_File.objects.all().order_by('-id')
+        else:
+            return Sound_File.objects.filter(dong=user.dong, ho=user.ho).order_by('-id')
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
@@ -111,9 +130,19 @@ class SoundFileViewSet(viewsets.ModelViewSet):
 
 
 class SoundLevelVerifiedViewSet(viewsets.ModelViewSet):
-    queryset = Sound_Level_Verified.objects.all().order_by('-id')           # ID 정렬
+    queryset = Sound_Level_Verified.objects.all()
+    permission_classes = [AllowAny]
     serializer_class = SoundLevelVerifiedSerializer                         # 녹음파일 데이터에 대한 직렬화 처리
     pagination_class = SetPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_anonymous:   # if the user is anonymous
+            return Sound_Level_Verified.objects.all().order_by('-id')
+        if user.is_superuser:  # if the user is an admin
+            return Sound_Level_Verified.objects.all().order_by('-id')
+        else:
+            return Sound_Level_Verified.objects.filter(dong=user.dong, ho=user.ho).order_by('-id')
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
@@ -152,8 +181,18 @@ class ReplyViewSet(viewsets.ModelViewSet):
 
 class ComplainBoardViewSet(viewsets.ModelViewSet):
     queryset = ComplainBoard.objects.all().order_by('-created_date')        # 생성일시 기준 정렬
+    permission_classes = [IsAuthenticated]
     serializer_class = ComplainBoardSerializer                              # 민원접수 게시판 데이터에 대한 직렬화 처리
     pagination_class = SetPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_anonymous:   # if the user is anonymous
+            return ComplainBoard.objects.all().order_by('-id')
+        if user.is_superuser:  # if the user is an admin
+            return ComplainBoard.objects.all().order_by('-id')
+        else:
+            return ComplainBoard.objects.filter(author=user.userid).order_by('-id')
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
