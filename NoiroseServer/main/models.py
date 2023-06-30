@@ -147,7 +147,7 @@ class Sound_Level_Verified(models.Model):
         ('가구끄는소리', '가구끄는소리'),
         ('진공청소기', '진공청소기'),
         ('악기소리', '악기소리'),
-        ('반려동물', '반려동물'),
+        ('반려동물', '반려동물')
     )
     sound_type = models.CharField('소음 종류', max_length=30, choices=TYPE_CHOICES, default='발걸음소리')  
     file_name = models.CharField('녹음 파일 명', max_length=40, null=True)   # 녹음된 파일 명

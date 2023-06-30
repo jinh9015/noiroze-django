@@ -90,12 +90,17 @@ class SoundLevelViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_anonymous:   # if the user is anonymous
-            return Sound_Level.objects.all().order_by('-id')
-        if user.is_superuser:  # if the user is an admin
+        dong = self.request.query_params.get('dong', None)  # 'dong'이라는 쿼리 파라미터를 추출
+
+        if user.is_anonymous:   # 토큰 검증 없이 데이터를 가져오는 사용자라면
+            if dong is not None:  # 만약에 dong 인자가 주어진다면
+                return Sound_Level.objects.filter(dong=dong).order_by('-id') # dong 필터링 데이터를 보여줌
+            else:
+                return Sound_Level.objects.all().order_by('-id')             # dong 인자가 없으면, 데이터를 전부 가져옴
+        if user.is_superuser:                                                # 슈퍼유저인 경우, 데이터를 전부 가져옴
             return Sound_Level.objects.all().order_by('-id')
         else:
-            return Sound_Level.objects.filter(dong=user.dong, ho=user.ho).order_by('-id')
+            return Sound_Level.objects.filter(dong=user.dong, ho=user.ho).order_by('-id')   # 토큰 인증된 경우, dong, ho 가 일치하는 데이터만 가져옴
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
@@ -103,6 +108,8 @@ class SoundLevelViewSet(viewsets.ModelViewSet):
         if queryset.count() >= 1000:                                        # 데시벨 데이터 생성시, 100개 이상이 되면
             queryset.first().delete()                                       # 가장 먼저 만들어진 데이터부터 삭제
         return response
+    
+
     
 
 class SoundFileViewSet(viewsets.ModelViewSet):
