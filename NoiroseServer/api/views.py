@@ -96,7 +96,7 @@ class SoundLevelViewSet(viewsets.ModelViewSet):
             return Sound_Level.objects.all().order_by('-id')             # dong 인자가 없으면, 데이터를 전부 가져옴
         if user.is_superuser:                                                # 슈퍼유저인 경우, 데이터를 전부 가져옴
             return Sound_Level.objects.all().order_by('-id')
-        else:
+        if user.is_authenticated:
             if ho is None :
                 return Sound_Level.objects.filter(dong=user.dong).order_by('-id')
             return Sound_Level.objects.filter(dong=user.dong, ho=user.ho).order_by('-id')   # 토큰 인증된 경우, dong, ho 가 일치하는 데이터만 가져옴
