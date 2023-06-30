@@ -31,8 +31,8 @@
                                     <td>{{ board.content }}</td>
                                     <td>{{ board.author }}</td>
                                     <td>{{ board.created_date }}</td>
-                                    <td>{{ board.modify_date }}</td>
-                                    <td>{{ board.like }}</td>
+                                    <td>{{ board.modify_date|default:"" }}</td>
+                                    <td>{{ board.like|default:"" }}</td>
                                     <td>
                                         <!-- <a href="{% url 'main:update_complain_board' board.id %}" class="btn btn-primary">수정</a>
                                         <button type="button" class="btn btn-danger" onclick="deleteBoard({{ board.id }})">삭제</button> -->
