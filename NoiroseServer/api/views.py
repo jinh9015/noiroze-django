@@ -126,7 +126,7 @@ class SoundFileViewSet(viewsets.ModelViewSet):
         if user.userid :
             # if user.userid == "admin" :
                 # return Sound_Level.objects.all().order_by('-id')
-            return Sound_Level.objects.filter(dong=user.dong, ho=user.ho).order_by('created_at')
+            return Sound_File.objects.filter(dong=user.dong, ho=user.ho).order_by('created_at')
         else:
             return Sound_File.objects.filter(dong=user.dong, ho=user.ho).order_by('-id')
 
@@ -212,7 +212,6 @@ class ComplainBoardViewSet(viewsets.ModelViewSet):
         if queryset.count() >= 200:                                         # 게시판 데이터 생성시, 200개 이상이 되면
             queryset.first().delete()                                       # 가장 먼저 만들어진 데이터부터 삭제
         return response
-
 
 
 class NoticeBoardViewSet(viewsets.ModelViewSet):
