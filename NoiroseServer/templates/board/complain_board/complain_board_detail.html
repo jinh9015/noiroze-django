@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div id="layoutSidenav_content">
+        <div class="container-fluid px-4">
+            <div class="row">
+                <div class="col-md-8">
+                    <h2>{{ board.title }}</h2>
+                    <p>{{ board.content }}</p>
+                    <p>작성자: {{ board.author }}</p>
+                    <p>작성일: {{ board.created_date }}</p>
+                    <a href="{% url 'main:complain_board_list' %}" class="btn btn-secondary">목록으로 돌아가기</a>
+                </div>
+                <div class="col-md-4">
+                    <!-- Sidebar content goes here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
