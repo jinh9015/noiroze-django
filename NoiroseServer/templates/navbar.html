@@ -7,6 +7,10 @@
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
         <!-- 햄벅 오른쪽 끝 위치 -->
+            <!-- <div class="input-group">
+                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+            </div> -->
         </form>
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
@@ -54,6 +58,10 @@
                                 </a>
                             </nav>
                         </div>
+                        <a class="nav-link" href="#" onclick="navigateToDong()" >
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            소음 확인
+                        </a>
                     </div>
                 </div>
                 
@@ -76,14 +84,20 @@ function updateLoginStatus() {
     const loginStatus = document.getElementById("loginStatus");
 
     if (authToken) {
-        loginStatus.textContent = "접속 중";
+        loginStatus.textContent = "계정 활성화";
     } else {
-        loginStatus.textContent = "미접속 중";
+        loginStatus.textContent = "로그인이 필요합니다";
     }
 }
 function navigateToDashboard() {
     if (isAuthenticated()) {
         window.location.href = "{% url 'main:dashboard' %}";
+    }
+}
+
+function navigateToDong() {
+    if (isAuthenticated()) {
+        window.location.href = "{% url 'main:dong_101' %}";
     }
 }
 

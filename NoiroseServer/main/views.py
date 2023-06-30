@@ -16,6 +16,22 @@ def base_request(request):
 def dash_request(request):
     return render(request, 'dash.html')
 
+# 동 페이지
+def dong_101_request(request):
+    return render(request, 'board/decibel_dong/dong_101.html')
+
+def dong_102_request(request):
+    return render(request, 'board/decibel_dong/dong_102.html')
+
+def dong_103_request(request):
+    return render(request, 'board/decibel_dong/dong_103.html')
+
+def dong_104_request(request):
+    return render(request, 'board/decibel_dong/dong_104.html')
+
+def dong_105_request(request):
+    return render(request, 'board/decibel_dong/dong_105.html')
+
 
 # 녹음파일 서버에 저장하는 함수
 @csrf_exempt

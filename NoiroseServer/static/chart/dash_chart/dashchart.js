@@ -12,59 +12,59 @@ function fetchDongData() {
           .then(data => data.results);
   }
 
-  // 모든 페이지의 데이터를 가져오는 함수
-  async function fetchAllData() {
-      const totalPages = 15; // 전체 페이지 수
-      const promises = [];
+  // // 모든 페이지의 데이터를 가져오는 함수
+  // async function fetchAllData() {
+  //     const totalPages = 15; // 전체 페이지 수
+  //     const promises = [];
 
-      for (let page = 1; page <= totalPages; page++) {
-          promises.push(fetchData(page));
-      }
+  //     for (let page = 1; page <= totalPages; page++) {
+  //         promises.push(fetchData(page));
+  //     }
 
-      const results = await Promise.all(promises);
-      // 결과 배열 합치기
-      const mergedResults = results.flat();
-      return mergedResults;
-  }
+  //     const results = await Promise.all(promises);
+  //     // 결과 배열 합치기
+  //     const mergedResults = results.flat();
+  //     return mergedResults;
+  // }
 
-  // 차트 데이터 업데이트 함수
-  function updateChartData() {
-      fetchAllData()
-          .then(data => {
-              // 동별로 데이터 그룹화 및 평균 계산
-              var groupedData = {};
-              data.forEach(item => {
-                  const dong = item.dong;
-                  if (groupedData.hasOwnProperty(dong)) {
-                      groupedData[dong].push(item.value);
-                  } else {
-                      groupedData[dong] = [item.value];
-                  }
-              });
+  // // 차트 데이터 업데이트 함수
+  // function updateChartData() {
+  //     fetchAllData()
+  //         .then(data => {
+  //             // 동별로 데이터 그룹화 및 평균 계산
+  //             var groupedData = {};
+  //             data.forEach(item => {
+  //                 const dong = item.dong;
+  //                 if (groupedData.hasOwnProperty(dong)) {
+  //                     groupedData[dong].push(item.value);
+  //                 } else {
+  //                     groupedData[dong] = [item.value];
+  //                 }
+  //             });
 
-              // 동별 평균 데이터 추출
-              var labels = [];
-              var values = [];
-              for (const [dong, items] of Object.entries(groupedData)) {
-                  labels.push(dong);
-                  if (items.length === 0) {
-                      values.push('');
-                  } else {
-                      var sum = items.reduce((total, value) => total + value, 0);
-                      var average = sum / items.length;
-                      values.push(average.toFixed(2));
-                  }
-              }
+  //             // 동별 평균 데이터 추출
+  //             var labels = [];
+  //             var values = [];
+  //             for (const [dong, items] of Object.entries(groupedData)) {
+  //                 labels.push(dong);
+  //                 if (items.length === 0) {
+  //                     values.push('');
+  //                 } else {
+  //                     var sum = items.reduce((total, value) => total + value, 0);
+  //                     var average = sum / items.length;
+  //                     values.push(average.toFixed(2));
+  //                 }
+  //             }
 
-              // 차트 데이터 업데이트
-              myAreaChart.data.labels = labels;
-              myAreaChart.data.datasets[0].data = values;
-              myAreaChart.update();
-          })
-          .catch(error => {
-              console.error('Error:', error);
-          });
-  }
+  //             // 차트 데이터 업데이트
+  //             myAreaChart.data.labels = labels;
+  //             myAreaChart.data.datasets[0].data = values;
+  //             myAreaChart.update();
+  //         })
+  //         .catch(error => {
+  //             console.error('Error:', error);
+  //         });
+  // }
 
   // 차트 생성 및 데이터 업데이트
   var ctx = document.getElementById('myAreaChart').getContext('2d');
