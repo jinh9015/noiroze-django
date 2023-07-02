@@ -99,6 +99,7 @@ class Sound_File(models.Model):
 
 
 
+
 # 층간소음 AI 필터링 후 데이터
 class Sound_Level_Verified(models.Model):
     DONG_CHOICES = (

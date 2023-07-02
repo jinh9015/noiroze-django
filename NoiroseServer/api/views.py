@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth import login, authenticate
+from datetime import datetime
+from datetime import date as dt
 
 from rest_framework import generics, viewsets
 from rest_framework.views import APIView
@@ -93,15 +95,22 @@ class SoundLevelViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         dong = self.request.query_params.get('dong', None)
+        date = self.request.query_params.get('date', None)
 
-        if user.is_anonymous :
+        
+        if date is not None:          # 클라이언트에서 주어진 date 파라미터에서, 날짜만 추출
+            date_obj = datetime.strptime(date, '%Y-%m-%d').date()
+        else:                         # 클라이언트에서 주어진 date가 없다면, 오늘 날짜를 기본으로 사용
+            date_obj = dt.today() 
+
+        if user.is_anonymous :                       # 토큰 인증이 없으면 전부 anonymous로 처리
             if dong is not None :
-                return Sound_Level.objects.filter(dong=dong).order_by('created_at')
+                return Sound_Level.objects.filter(dong=dong, created_at__date=date_obj).order_by('created_at')
             return Sound_Level.objects.all().order_by('-id')
         if user.userid :
             # if user.userid == "admin" :
                 # return Sound_Level.objects.all().order_by('-id')
-            return Sound_Level.objects.filter(dong=user.dong, ho=user.ho).order_by('created_at')
+            return Sound_Level.objects.filter(dong=user.dong, ho=user.ho, created_at__date=date_obj).order_by('created_at')
         else :                                                              # 토큰 인증 없이 가져오는 경우.     
             return Sound_Level.objects.all().order_by('-id')
 
@@ -121,7 +130,7 @@ class SoundFileViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_anonymous:   # if the user is anonymous
+        if user.is_anonymous:                   # 토큰 인증이 없으면 전부 anonymous로 처리
             return Sound_File.objects.all().order_by('-id')
         if user.userid :
             # if user.userid == "admin" :
