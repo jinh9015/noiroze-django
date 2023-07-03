@@ -62,7 +62,10 @@ class UserLoginView(APIView):
             # print(dir(user))
             token, _ = Token.objects.get_or_create(user=user)          # 로그인 한 유저의 토큰 생성
             # print(user)
-            response = Response({"token": token.key}, status=200)     # 응답에 토큰 포함
+            response = Response({"token": token.key, 
+                                 "dong": user.dong,  # Add this line
+                                 "ho": user.ho  # Add this line
+                                }, status=200)                        # 응답에 토큰 및 동,호수 정보 포함
             response.set_cookie('auth-token', token.key)              # 
             return response
         
