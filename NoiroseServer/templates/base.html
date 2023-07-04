@@ -2,16 +2,13 @@
 <!doctype html>
 <html lang="ko">
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap CSS -->
-
-    <!-- pybo CSS -->
+    <!-- Web CSS -->
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"> 
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
-    <title>Noiroze | 관리자용 페이지</title>
+    <title>Noiroze | 관리자 페이지</title>
 </head>
 <body>
 <!-- 네비게이션바 -->
@@ -28,9 +25,9 @@
 
 <!-- 자바스크립트 Start -->
 {% block script %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script> <!-- 그래프 그리는 자바스크립트보다 먼저 로드되어야 함 -->
 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-<script src="{% static 'scripts.js' %}"></script>
+<script src="{% static 'scripts.js' %}"></script> <!-- 사이드바 토글 자바스크립트 -->
 
 {% endblock %}
 <!-- 자바스크립트 End -->
@@ -44,7 +41,7 @@
 </body>
 </html>
 
-<!-- 토큰 존재 여부에 따른 버튼 보이기/숨기기 액션-->
+<!-- 토큰 존재 여부에 따른 우측 상단 버튼 보이기/숨기기 액션-->
 <script>
     window.addEventListener('DOMContentLoaded', (event) => {
       var token = localStorage.getItem('auth-token');               // 로그인 성공 시, 로컬 스토리지에 존재하는 토큰을 가져옴
@@ -110,21 +107,25 @@
                   return response.json();
               }
               else {                                     // 응답 요청 실패시
-                  throw new Error('Failed to fetch user info');
+                  throw new Error('fetch user 정보를 불러오는데 실패');
               }
               })
               .then(function(user) {    // 응답 요청 성공 시, 이후에 처리하는 함수
+
               // 로그인 한 유저의 정보를 표시함
               var userIdElement = document.getElementById('user_id');   // id="user_id" 에 해당하는 곳에
               userIdElement.textContent = user.userid;                  // 유저 모델의 userid를 가져와서 부여
-              var userNameElement = document.getElementById('user_name');   // id="user_name" 에 해당하는 곳에
-              userNameElement.textContent = user.name;                    // 유저 모델의 name을 가져와서 부여
-              var userEmailElement = document.getElementById('user_email');  // id="user_email" 에 해당하는 곳에
-              userEmailElement.textContent = user.email;                   // 유저 모델의 email을 가져와서 부여
-              var userDongElement = document.getElementById('user_dong');   // id="user_dong" 에 해당하는 곳에
-              userDongElement.textContent = user.dong;                    // 유저 모델의 dong을 가져와서 부여
-              var userHoElement = document.getElementById('user_ho');     // id="user_ho" 에 해당하는 곳에
-              userHoElement.textContent = user.ho;                      // 유저 모델의 ho를 가져와서 부여
+
+              // 각 Element 사용한다면 주석 해제해서 사용
+
+              // var userNameElement = document.getElementById('user_name');   // id="user_name" 에 해당하는 곳에
+              // userNameElement.textContent = user.name;                    // 유저 모델의 name을 가져와서 부여
+              // var userEmailElement = document.getElementById('user_email');  // id="user_email" 에 해당하는 곳에
+              // userEmailElement.textContent = user.email;                   // 유저 모델의 email을 가져와서 부여
+              // var userDongElement = document.getElementById('user_dong');   // id="user_dong" 에 해당하는 곳에
+              // userDongElement.textContent = user.dong;                    // 유저 모델의 dong을 가져와서 부여
+              // var userHoElement = document.getElementById('user_ho');     // id="user_ho" 에 해당하는 곳에
+              // userHoElement.textContent = user.ho;                      // 유저 모델의 ho를 가져와서 부여
               })
               .catch(function(error) {
               console.error('Error:', error);

@@ -3,9 +3,8 @@ Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSyste
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
 
-/////////////월별 평균 데시벨
+/////////////월별 평균 데시벨//////////////
 
-// 월별 평균 데시벨 차트
 function fetchMonthlyData() {
     // API 요청 및 데이터 가져오기 함수
     function fetchData(page) {
@@ -17,7 +16,7 @@ function fetchMonthlyData() {
   
     // 모든 페이지의 데이터를 가져오는 함수
     async function fetchAllData() {
-      const totalPages = 15; // 전체 페이지 수
+      const totalPages = 70; // 전체 페이지 수
       const promises = [];
   
       for (let page = 1; page <= totalPages; page++) {
@@ -34,7 +33,7 @@ function fetchMonthlyData() {
     function updateChartData() {
         fetchAllData()
         .then(data => {
-            // “dong” 값이 102인 데이터 필터링
+            // “dong” 값이 102 데이터 필터링
             var filteredData = data.filter(item => item.dong === '102');
             // 월별로 데이터 그룹화 및 평균 계산
             var groupedData = {};
@@ -134,7 +133,7 @@ function fetchMonthlyData() {
   
     // 모든 페이지의 데이터를 가져오는 함수
     async function fetchAllData() {
-      const totalPages = 15; // 전체 페이지 수
+      const totalPages = 70; // 전체 페이지 수
       const promises = [];
   
       for (let page = 1; page <= totalPages; page++) {
@@ -233,7 +232,7 @@ function fetchMonthlyData() {
   }
   
 
-/////////////////////////////////////////////////////////////////////// 호수별 평균 데시벨 차트 /////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////// 호수별 평균 데시벨 차트 /////////////////////////////////////////////////////////////
     function fetchHoData() {
         // 호수 리스트
         var hoList = ['101', '102', '201', '202', '301', '302', '401', '402', '501', '502', '601', '602', '701', '702', '801', '802', '901', '902', '1001', '1002'];
@@ -293,7 +292,7 @@ function fetchMonthlyData() {
     
         // 모든 페이지의 데이터를 가져오는 함수
         async function fetchAllData() {
-        const totalPages = 15; // 전체 페이지 수
+        const totalPages = 70; // 전체 페이지 수
         const promises = [];
     
         for (let page = 1; page <= totalPages; page++) {
@@ -374,7 +373,4 @@ function fetchMonthlyData() {
     fetchHoData();
 
 
-        // 그래프 컨테이너의 너비 조정
-        // var chartContainer = document.getElementById('myHoChart').parentNode;
-        // chartContainer.style.width = '1450px'; // 원하는 가로 길이로 설정
 

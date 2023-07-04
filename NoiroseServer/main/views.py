@@ -1,22 +1,26 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotAllowed
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q, Count
 from django.core.paginator import Paginator
 from .models import *
-from .forms import ComplainBoardForm
+from .forms import ComplainBoardForm, AnswerForm
 from rest_framework.authtoken.models import Token
 from django.contrib import messages
-from main.models import ComplainBoard
 
-# Create your views here.
+
+
+
+
+
+
+# 기본 render 함수
 def base_request(request):
     return render(request, 'base.html')
 
 def dash_request(request):
     return render(request, 'dash.html')
 
-# 동 페이지
 def dong_101_request(request):
     return render(request, 'board/decibel_dong/dong_101.html')
 
@@ -52,10 +56,9 @@ def download_sound_file(request):
 
     return JsonResponse(msg)
 
+######### ######### ######### ######### ######### ######### ######### ######### 커뮤니티 보드######### ######### ######### ######### ######### ######### ######### ######### 
+# 커뮤니티 게시판 리스트 
 def community_board_list(request):
-    '''
-    커뮤니티 게시판 리스트 출력
-    '''
     
     # 입력 인자
     page = request.GET.get('page', '1')  # 페이지
@@ -91,6 +94,7 @@ def community_board_list(request):
     context = {'board_list': page_obj, 'page': page, 'kw': kw, 'so': so}
     return render(request, 'board/community_board/community_board_list.html', context)
 
+# 커뮤니티 게시판 글 작성 함수
 def create_community_board(request):
     if request.method == 'POST':
         form = ComplainBoardForm(request.POST)
@@ -111,8 +115,18 @@ def create_community_board(request):
         
     return render(request, 'board/community_board/create_community_board.html', {'form': form})
 
+# 커뮤니티 게시판 글 제목을 눌렀을 때 이동되는 화면
+def community_board_detail(request, pk):
+    board = get_object_or_404(CommunityBoard, pk=pk)
+    replies = board.reply_set.all()
+    context = {'board': board, 'replies': replies}
+    return render(request, 'board/community_board/community_board_detail.html', context)
 
-######### 컴플레인 보드 관련 함수 시작
+
+
+######### ######### ######### ######### ######### ######### ######### ######### 컴플레인 보드######### ######### ######### ######### ######### ######### ######### ######### 
+
+# 컴플레인 게시판 글 작성 함수
 def create_complain_board(request):
     if request.method == 'POST':
         form = ComplainBoardForm(request.POST)
@@ -133,6 +147,7 @@ def create_complain_board(request):
         
     return render(request, 'board/complain_board/create_complain_board.html', {'form': form})
 
+# 컴플레인 게시판 글 수정 함수
 def update_complain_board(request, complain_board_id):
     complain_board = get_object_or_404(ComplainBoard, id=complain_board_id)
 
@@ -159,7 +174,9 @@ def update_complain_board(request, complain_board_id):
         form = ComplainBoardForm(instance=complain_board)
 
     return render(request, 'board/complain_board/update_complain_board.html', {'form': form, 'complain_board_id': complain_board_id})
-    
+
+
+# 컴플레인 게시판 글 삭제 함수    
 def delete_complain_board(request, complain_board_id):
     complain_board = get_object_or_404(ComplainBoard, id=complain_board_id)
 
@@ -188,6 +205,8 @@ def delete_complain_board(request, complain_board_id):
     }
     return render(request, 'board/complain_board/delete_complain_board.html', context)
 
+
+# 컴플레인 게시판 리스트 함수 (커뮤니티 게시판 리스트 함수와 동일)
 def complain_board_list(request):
     '''
     board_list 출력
@@ -230,28 +249,118 @@ def complain_board_list(request):
     return render(request, 'board/complain_board/complain_board_list.html', context)
 
 
-
+# 컴플레인 게시판에서 글 제목 눌렀을 때 이동되는 화면
 def complain_board_detail(request, pk):
     board = get_object_or_404(ComplainBoard, pk=pk)
     return render(request, 'board/complain_board/complain_board_detail.html', {'board': board})
 
-def add_reply(request, pk):
-    if request.method == "POST":
-        complain_board = get_object_or_404(ComplainBoard, pk=pk)
-        content = request.POST['content']
 
-        # 현재 로그인된 사용자를 author에 저장
-        token_key = request.COOKIES.get('auth-token')  # 쿠키에서 토큰 가져오기
+# 컴플레인 게시판에서 답변을 수정하는 함수
+def answer_update(request, answer_id):
+    answer = get_object_or_404(Answer, id=answer_id)
+
+    if request.method == 'POST':
+        form = AnswerForm(request.POST, instance=answer)
+        if form.is_valid():
+            token_key = request.COOKIES.get('auth-token')
+            
+            try:
+                token = Token.objects.get(key=token_key)
+                if token.user == answer.author:
+                    updated_answer = form.save(commit=False)
+                    updated_answer.author = token.user
+                    updated_answer.save()
+                    return redirect('main:complain_board_detail', pk = answer.question.id)
+                else:
+                    messages.error(request, '수정 권한이 없습니다.')
+                    return redirect('main:complain_board_detail', pk = answer.question.id)
+            except Token.DoesNotExist:
+                messages.error(request, '로그인이 필요합니다.')
+                return redirect('/common/login/')
+    else:
+        form = AnswerForm(instance=answer)
+
+    return render(request, 'board/complain_board/update_answer.html', {'form': form, 'answer_id': answer_id})
+
+
+# 컴플레인 게시판에서 답변을 작성하는 함수
+# def answer_create(request, question_id):
+#     question = get_object_or_404(ComplainBoard, pk=question_id)
+    
+#     if request.method == "POST":
+#         form = AnswerForm(request.POST)
+        
+#         if form.is_valid():
+#             answer = form.save(commit=False)
+            
+#             # 토큰 인증 방식 적용
+#             token_key = request.COOKIES.get('auth-token')  # 쿠키에서 토큰 가져오기
+#             try:
+#                 token = Token.objects.get(key=token_key)  # 토큰으로 사용자 정보 가져오기
+#             except Token.DoesNotExist:
+#                 messages.error(request, '로그인이 필요합니다.')
+#                 return redirect('/common/login/')
+
+#             answer.author = token.user  # author 속성에 로그인 계정 저장
+#             answer.create_date = timezone.now()
+#             answer.question = question
+#             answer.save()
+#             return redirect('main:complain_board_detail', pk=question.id)
+    
+#     else:
+#         return HttpResponseNotAllowed('POST 오류')
+
+#     context = {'question': question, 'form': form}
+#     return render(request, 'board/complain_board/complain_board_detail.html', context)
+
+def answer_create(request, question_id):
+    question = get_object_or_404(ComplainBoard, pk=question_id)
+    form = AnswerForm()
+
+    if request.method == "POST":
+        form = AnswerForm(request.POST)
+        
+        if form.is_valid():
+            answer = form.save(commit=False)
+
+            # 토큰 인증 방식 적용
+            token_key = request.COOKIES.get('auth-token')  # 쿠키에서 토큰 가져오기
+            try:
+                token = Token.objects.get(key=token_key)  # 토큰으로 사용자 정보 가져오기
+            except Token.DoesNotExist:
+                messages.error(request, '로그인이 필요합니다.')
+                return redirect('/common/login/')
+
+            answer.author = token.user  # author 속성에 로그인 계정 저장
+            answer.create_date = timezone.now()
+            answer.question = question
+            answer.save()
+            return redirect('main:complain_board_detail', pk=question.id)
+    else:
+        form = AnswerForm()
+        
+
+    context = {'question': question, 'form': form}
+    return render(request, 'board/complain_board/complain_board_detail.html', context)
+##################################################################################################################################################################
+
+
+
+
+def answer_delete(request, question_id, answer_id):
+    if request.method == "POST":
+        answer = get_object_or_404(Answer, pk=answer_id)
+        token_key = request.COOKIES.get('auth-token')
         try:
-            token = Token.objects.get(key=token_key)  # 토큰으로 사용자 정보 가져오기
+            token = Token.objects.get(key=token_key)
         except Token.DoesNotExist:
             messages.error(request, '로그인이 필요합니다.')
             return redirect('/common/login/')
-
-        author = token.user
-
-        Reply.objects.create(community_board=complain_board, author=author, content=content)
-
-        return redirect('main:complain_board_detail', pk)
-
-#   컴플레인 보드 관련 함수 끝  #
+        
+        if token.user == answer.author:
+            answer.delete()
+            messages.success(request, '답변이 삭제되었습니다.')
+        else:
+            messages.error(request, '자신의 답변만 삭제할 수 있습니다.')
+    
+    return redirect('main:complain_board_detail', pk=question_id)

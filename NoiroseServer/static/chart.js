@@ -1,4 +1,4 @@
-// Set new default font family and font color to mimic Bootstrap's default styling
+// 대시보드 그래프
 Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
@@ -14,7 +14,7 @@ function fetchDongData() {
 
   // 모든 페이지의 데이터를 가져오는 함수
   async function fetchAllData() {
-      const totalPages = 15; // 전체 페이지 수
+      const totalPages = 70; // 전체 페이지 수
       const promises = [];
 
       for (let page = 1; page <= totalPages; page++) {
@@ -116,7 +116,7 @@ function fetchTimeData() {
 
   // 모든 페이지의 데이터를 가져오는 함수
   async function fetchAllData() {
-    const totalPages = 15; // 전체 페이지 수
+    const totalPages = 70; // 전체 페이지 수
     const promises = [];
 
     for (let page = 1; page <= totalPages; page++) {

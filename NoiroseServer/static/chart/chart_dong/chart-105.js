@@ -17,7 +17,7 @@ function fetchMonthlyData() {
   
     // 모든 페이지의 데이터를 가져오는 함수
     async function fetchAllData() {
-      const totalPages = 15; // 전체 페이지 수
+      const totalPages = 70; // 전체 페이지 수
       const promises = [];
   
       for (let page = 1; page <= totalPages; page++) {
@@ -134,7 +134,7 @@ function fetchMonthlyData() {
   
     // 모든 페이지의 데이터를 가져오는 함수
     async function fetchAllData() {
-      const totalPages = 15; // 전체 페이지 수
+      const totalPages = 70; // 전체 페이지 수
       const promises = [];
   
       for (let page = 1; page <= totalPages; page++) {
@@ -293,7 +293,7 @@ function fetchMonthlyData() {
     
         // 모든 페이지의 데이터를 가져오는 함수
         async function fetchAllData() {
-        const totalPages = 15; // 전체 페이지 수
+        const totalPages = 70; // 전체 페이지 수
         const promises = [];
     
         for (let page = 1; page <= totalPages; page++) {

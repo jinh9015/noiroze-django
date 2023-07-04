@@ -1,3 +1,4 @@
+<!-- 필요한 기능은 주석을 해제하세요 -->
 {% extends 'base.html' %}
 {% block content %}
 <style>
@@ -24,7 +25,6 @@
                                 <th>관리</th>
                             </tr>
                         </thead>
-                        
                         <tbody>
                             {% for board in board_list %}
                                 <tr>
@@ -32,7 +32,7 @@
                                     <td>{{ board.author }}</td>
                                     <td>{{ board.created_date }}</td>
                                     <td>
-                                        <a href="{% url 'main:update_complain_board' board.id %}" class="btn btn-primary smaller-button" onclick="updateBoard({{ board.id }})">수정</a>
+                                        <!-- <a href="{% url 'main:update_complain_board' board.id %}" class="btn btn-primary smaller-button" onclick="updateBoard({{ board.id }})">수정</a> -->
                                         <button type="button" class="btn btn-danger smaller-button" onclick="deleteBoard({{ board.id }})">삭제</button>
                                     </td>
                                 </tr>
@@ -43,7 +43,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                    <a href="{% url 'main:create_complain_board' %}" class="btn btn-primary mb-3">게시글 작성</a>
+                    <!-- <a href="{% url 'main:create_complain_board' %}" class="btn btn-primary mb-3">게시글 작성</a> -->
                 </div>
 
                 <!-- 페이지네이션 -->
@@ -111,7 +111,7 @@
     function updateBoard(boardId) {
         const updateBtn = document.querySelector(`[onclick="updateBoard(${boardId})"]`);
         const deleteBtn = updateBtn.nextElementSibling;
-        const token = getCookie("auth-token");
+        const token = localStorage.getItem('auth-token');
         if (!token) {
             updateBtn.hidden = true;
             deleteBtn.hidden = true;

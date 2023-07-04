@@ -16,7 +16,7 @@ function fetchMonthlyData() {
   
     // 모든 페이지의 데이터를 가져오는 함수
     async function fetchAllData() {
-      const totalPages = 15; // 전체 페이지 수
+      const totalPages = 70; // 전체 페이지 수
       const promises = [];
   
       for (let page = 1; page <= totalPages; page++) {
@@ -133,7 +133,7 @@ function fetchMonthlyData() {
   
     // 모든 페이지의 데이터를 가져오는 함수
     async function fetchAllData() {
-      const totalPages = 15; // 전체 페이지 수
+      const totalPages = 70; // 전체 페이지 수
       const promises = [];
   
       for (let page = 1; page <= totalPages; page++) {
@@ -292,7 +292,7 @@ function fetchMonthlyData() {
     
         // 모든 페이지의 데이터를 가져오는 함수
         async function fetchAllData() {
-        const totalPages = 15; // 전체 페이지 수
+        const totalPages = 70; // 전체 페이지 수
         const promises = [];
     
         for (let page = 1; page <= totalPages; page++) {
@@ -371,11 +371,6 @@ function fetchMonthlyData() {
     fetchMonthlyData();
     fetchDailyData();
     fetchHoData();
-
-
-        // 그래프 컨테이너의 너비 조정
-        // var chartContainer = document.getElementById('myHoChart').parentNode;
-        // chartContainer.style.width = '450px'; // 원하는 가로 길이로 설정
 
 
 

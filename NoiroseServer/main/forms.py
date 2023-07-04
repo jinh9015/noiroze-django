@@ -1,5 +1,5 @@
 from django import forms
-from .models import ComplainBoard
+from .models import ComplainBoard,  Answer
 
 # class ComplainBoardForm(forms.ModelForm):
 #     class Meta:
@@ -32,3 +32,13 @@ class ComplainBoardForm(forms.ModelForm):
         
         if not content.strip():
             self.add_error('content', '내용에 최소 한 개의 문자를 입력해주세요.')
+
+
+
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        fields = ['content']
+        labels = {
+            'content': '답변내용',
+        }

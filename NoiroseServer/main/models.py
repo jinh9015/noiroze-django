@@ -203,3 +203,9 @@ class NoticeBoard(models.Model) :
 
     def __str__(self):
         return self.title
+    
+class Answer(models.Model):
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    question = models.ForeignKey(ComplainBoard, on_delete=models.CASCADE)
+    content = models.TextField()
+    create_date = models.DateTimeField()

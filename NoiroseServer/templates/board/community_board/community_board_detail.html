@@ -15,21 +15,16 @@
                         </div>
                     </div>
                 </div>
-                <h5 class="border-bottom my-3 py-2">{{board.answer_set.count}}개의 답변이 있습니다.</h5>
-                {% for answer in board.answer_set.all %}
+                <!-- 답변 개수 표시 및 내용 출력 -->
+                <h5 class="border-bottom my-3 py-2">{{ board.reply_set.count }}개의 답변이 있습니다.</h5>
+                {% for reply in replies %}
                 <div class="card my-3">
                     <div class="card-body">
-                        <div class="card-text" style="white-space: pre-line;">{{ answer.content }}</div>
+                        <div class="card-text" style="white-space: pre-line;">{{ reply.content }}</div>
                         <div class="d-flex justify-content-end">
                             <div class="badge bg-light text-dark p-2">
-                                {{ answer.create_date }}
-                                {% csrf_token %}
+                                {{ reply.created_date }}
                             </div>
-                            <a href="{% url 'main:answer_update' answer.id %}" class="btn btn-sm btn-warning ml-2">수정</a>
-                            <form action="{% url 'main:answer_delete' board.id answer.id %}" method="post" class="d-inline">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-sm btn-danger ml-2">삭제</button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -49,11 +44,7 @@
                         </div>
                     {% endif %}
                     <!-- 오류표시 End -->
-                    <div class="mb-3">
-                        <label for="content" class="form-label">답변내용</label>
-                        <textarea name="content" id="content" class="form-control" rows="10"></textarea>
-                    </div>
-                    <input type="submit" value="답변등록" class="btn btn-primary">
+
                 </form>
             </div>
         </div>
@@ -71,25 +62,4 @@
         </div>
     </footer>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('form[action="{% url "main:answer_create" board.id %}"]');
-        const contentField = document.getElementById('content');
-        const errorMsg = document.createElement('div');
-        errorMsg.className = 'alert alert-danger mt-2 d-none';
-        errorMsg.textContent = '최소 한 글자 이상 작성해야 합니다.';
-        contentField.insertAdjacentElement('afterend', errorMsg);
-
-        form.addEventListener('submit', function (event) {
-            if (contentField.value.trim().length === 0) {
-                event.preventDefault();
-                errorMsg.classList.remove('d-none');
-            } else {
-                errorMsg.classList.add('d-none');
-            }
-        });
-    });
-</script>
-
 {% endblock %}
