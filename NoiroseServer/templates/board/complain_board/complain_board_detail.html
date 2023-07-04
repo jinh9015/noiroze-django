@@ -25,7 +25,13 @@
                                 {{ answer.create_date }}
                                 {% csrf_token %}
                             </div>
-                            <a href="{% url 'main:answer_update' answer.id %}" class="btn btn-sm btn-warning ml-2">수정</a>
+                            <form action="{% url 'main:answer_update' answer.id %}" method="post" class="d-inline">
+
+                            
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-warning ml-2">수정</button>
+                                
+                            </form>
                             <form action="{% url 'main:answer_delete' board.id answer.id %}" method="post" class="d-inline">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-sm btn-danger ml-2">삭제</button>
